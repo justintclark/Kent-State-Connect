@@ -53,5 +53,5 @@ def tutors():
         'tutors.html',
         title='Tutors',
         year=datetime.now().year,
-        message='The tutor section is currently under development.'
+        message='Due to the ongoing pandemic, tutoring will only be held online through Blackboard Collab between 9am to 9pm EST.'
     )
