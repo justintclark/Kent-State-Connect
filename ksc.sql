@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2021 at 09:00 PM
+-- Generation Time: Mar 13, 2021 at 11:48 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -21,6 +21,18 @@ SET time_zone = "+00:00";
 --
 -- Database: `ksc`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `categories`
+--
+
+CREATE TABLE `categories` (
+  `cat_id` int(8) NOT NULL,
+  `cat_name` varchar(255) NOT NULL,
+  `cat_description` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -46,6 +58,7 @@ CREATE TABLE `topics` (
   `topic_id` int(8) NOT NULL,
   `topic_subject` varchar(255) NOT NULL,
   `topic_date` datetime NOT NULL,
+  `topic_cat` int(8) NOT NULL,
   `topic_by` int(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -60,13 +73,22 @@ CREATE TABLE `users` (
   `username` varchar(25) NOT NULL,
   `user_pass` varchar(25) NOT NULL,
   `user_email` varchar(25) NOT NULL,
-  `user_level` int(8) NOT NULL,
-  `user_date` datetime NOT NULL
+  `user_date` datetime NOT NULL,
+  `user_confirmed` tinyint(1) NOT NULL,
+  `user_confirmed_on` datetime DEFAULT NULL,
+  `user_admin` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`cat_id`),
+  ADD UNIQUE KEY `cat_name_unique` (`cat_name`);
 
 --
 -- Indexes for table `posts`
@@ -81,7 +103,8 @@ ALTER TABLE `posts`
 --
 ALTER TABLE `topics`
   ADD PRIMARY KEY (`topic_id`),
-  ADD KEY `topic_by` (`topic_by`);
+  ADD KEY `topic_by` (`topic_by`),
+  ADD KEY `topic_cat` (`topic_cat`);
 
 --
 -- Indexes for table `users`
@@ -92,6 +115,12 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `cat_id` int(8) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `posts`
@@ -120,7 +149,8 @@ ALTER TABLE `posts`
 -- Constraints for table `topics`
 --
 ALTER TABLE `topics`
-  ADD CONSTRAINT `topics_ibfk_1` FOREIGN KEY (`topic_by`) REFERENCES `users` (`user_id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `topics_ibfk_1` FOREIGN KEY (`topic_by`) REFERENCES `users` (`user_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `topics_ibfk_2` FOREIGN KEY (`topic_cat`) REFERENCES `categories` (`cat_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
