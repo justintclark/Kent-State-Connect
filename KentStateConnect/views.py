@@ -72,11 +72,11 @@ mysql = MySQL(app)
 @app.route('/login', methods =['GET', 'POST']) 
 def login(): 
     msg = '' 
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form: 
+    if request.method == 'POST' and 'username' in request.form and 'user_pass' in request.form: 
         username = request.form['username'] 
-        password = request.form['password'] 
+        user_pass = request.form['user_pass'] 
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) 
-        cursor.execute('SELECT * FROM accounts WHERE username = % s AND password = % s', (username, password, )) 
+        cursor.execute('SELECT * FROM users WHERE username = % s AND user_pass = % s', (username, user_pass, )) 
         account = cursor.fetchone() 
         if account: 
             session['loggedin'] = True
