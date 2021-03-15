@@ -59,12 +59,11 @@ def tutors():
         message='Due to the ongoing pandemic, tutoring will only be held online through Blackboard Collab between 9am to 9pm EST.'
     )
 
-app.secret_key = 'your secret key'
   
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'KSC'
+app.config['MYSQL_DB'] = 'ksc'
   
 mysql = MySQL(app) 
   
@@ -72,9 +71,9 @@ mysql = MySQL(app)
 @app.route('/login', methods =['GET', 'POST']) 
 def login(): 
     msg = '' 
-    if request.method == 'POST' and 'username' in request.form and 'user_pass' in request.form: 
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form: 
         username = request.form['username'] 
-        user_pass = request.form['user_pass'] 
+        user_pass = request.form['password'] 
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) 
         cursor.execute('SELECT * FROM users WHERE username = % s AND user_pass = % s', (username, user_pass, )) 
         account = cursor.fetchone() 
@@ -98,10 +97,10 @@ def logout():
 @app.route('/register', methods =['GET', 'POST']) 
 def register(): 
     msg = '' 
-    if request.method == 'POST' and 'username' in request.form and 'user_pass' in request.form and 'user_email' in request.form : 
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form : 
         username = request.form['username'] 
-        user_pass = request.form['user_pass'] 
-        user_email = request.form['user_email'] 
+        user_pass = request.form['password'] 
+        user_email = request.form['email'] 
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) 
         cursor.execute('SELECT * FROM users WHERE username = % s', (username, )) 
         account = cursor.fetchone() 
@@ -112,11 +111,17 @@ def register():
         elif not re.match(r'[A-Za-z0-9]+', username): 
             msg = 'Username must contain only characters and numbers !'
         elif not username or not user_pass or not user_email: 
-            msg = 'Please fill out the form !'
+            msg = 'Registration failed.'
+            print("Failed due to dumbass.")
         else: 
+            print(username)
+            print(user_pass)
+            print(user_email)
+            print("Hello")
             cursor.execute('INSERT INTO users VALUES (NULL, % s, % s, % s)', (username, user_pass, user_email, )) 
             mysql.connection.commit() 
             msg = 'You have successfully registered !'
     elif request.method == 'POST': 
-        msg = 'Please fill out the form !'
+        msg = 'Registration failed.'
+        print("Failed to post")
     return render_template('register.html', msg = msg) 
