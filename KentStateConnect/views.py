@@ -112,16 +112,10 @@ def register():
             msg = 'Username must contain only characters and numbers !'
         elif not username or not user_pass or not user_email: 
             msg = 'Registration failed.'
-            print("Failed due to dumbass.")
         else: 
-            print(username)
-            print(user_pass)
-            print(user_email)
-            print("Hello")
             cursor.execute('INSERT INTO users VALUES (NULL, % s, % s, % s)', (username, user_pass, user_email, )) 
             mysql.connection.commit() 
             msg = 'You have successfully registered !'
     elif request.method == 'POST': 
         msg = 'Registration failed.'
-        print("Failed to post")
     return render_template('register.html', msg = msg) 
