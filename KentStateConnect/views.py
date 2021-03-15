@@ -3,7 +3,7 @@ Routes and views for the flask application.
 """
 
 from datetime import datetime
-from flask import render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
@@ -107,14 +107,14 @@ def register():
         account = cursor.fetchone() 
         if account: 
             msg = 'Account already exists !'
-        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email): 
+        elif not re.match(r'[^@]+@[^@]+\.[^@]+', user_email): 
             msg = 'Invalid email address !'
         elif not re.match(r'[A-Za-z0-9]+', username): 
             msg = 'Username must contain only characters and numbers !'
-        elif not username or not password or not email: 
+        elif not username or not user_pass or not user_email: 
             msg = 'Please fill out the form !'
         else: 
-            cursor.execute('INSERT INTO users VALUES (NULL, % s, % s, % s, NULL, NULL)', (username, user_pass, user_email, )) 
+            cursor.execute('INSERT INTO users VALUES (NULL, % s, % s, % s)', (username, user_pass, user_email, )) 
             mysql.connection.commit() 
             msg = 'You have successfully registered !'
     elif request.method == 'POST': 
