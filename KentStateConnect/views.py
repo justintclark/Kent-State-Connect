@@ -84,8 +84,8 @@ MAIL_USE_TLS = False
 MAIL_USE_SSL = True
 
 # gmail authentication
-MAIL_USERNAME = os.environ['APP_MAIL_USERNAME']
-MAIL_PASSWORD = os.environ['APP_MAIL_PASSWORD']
+#MAIL_USERNAME = os.environ['MAIL_USERNAME']
+#MAIL_PASSWORD = os.environ['MAIL_PASSWORD']
 
 # mail accounts
 MAIL_DEFAULT_SENDER = 'from@example.com'
@@ -140,7 +140,7 @@ def register():
         else: 
             cursor.execute('INSERT INTO users VALUES (NULL, % s, % s, % s, % s, FALSE, NULL, NULL)', (username, user_pass, user_email, formatted_date)) 
             mysql.connection.commit() 
-            token = generate_confirmation_token(user.email)
+            token = generate_confirmation_token(user_email)
             msg = 'You have successfully registered !'
             confirm_url = url_for('confirm_email', token=token, _external=True)
             html = render_template('activate.html', confirm_url=confirm_url)
@@ -161,7 +161,7 @@ def generate_confirmation_token(user_email):
         user_email = request.form['user_email'] 
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) 
         serializer = URLSafeTimedSerializer(app.config['secret_key'])
-    return serializer.dumps(user_email, salt=app.config['SECURITY_PASSWORD_SALT'])
+        return serializer.dumps(user_email, salt=app.config['SECURITY_PASSWORD_SALT'])
 
 def confirm_token(token, expiration=3600):
     serializer = URLSafeTimedSerializer(app.config['secret_key'])
@@ -177,7 +177,7 @@ def confirm_token(token, expiration=3600):
         return False
     return user_email
 
-@app.route('/confirm/<token>')
+#@app.route('/confirm/<token>')
 def confirm_email(token):
     if request.method == 'POST' and 'user_email' and 'user_confirmed' and 'user_confirmed_on' in request.form: 
         user_email = request.form['user_email'] 
