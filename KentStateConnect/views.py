@@ -140,13 +140,13 @@ def register():
         else: 
             cursor.execute('INSERT INTO users VALUES (NULL, % s, % s, % s, % s, FALSE, NULL, NULL)', (username, user_pass, user_email, formatted_date)) 
             mysql.connection.commit() 
-            token = generate_confirmation_token(user_email)
+#            token = generate_confirmation_token(user_email)
             msg = 'You have successfully registered !'
-            confirm_url = url_for('confirm_email', token=token, _external=True)
-            html = render_template('activate.html', confirm_url=confirm_url)
-            subject = "Please confirm your email"
-            send_email(user_email, subject, html)
-            flash('A confirmation email has been sent via email.', 'success')
+#           confirm_url = url_for('confirm_email', token=token, _external=True)
+#            html = render_template('activate.html', confirm_url=confirm_url)
+#           subject = "Please confirm your email"
+#            send_email(user_email, subject, html)
+#            flash('A confirmation email has been sent via email.', 'success')
 
     elif request.method == 'POST': 
         msg = 'Registration failed.'
