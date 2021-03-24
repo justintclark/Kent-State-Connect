@@ -43,6 +43,16 @@ def about():
         message='For students, by students.'
     )
 
+@app.route('/resources')
+def resources():
+    """Renders the Resources page."""
+    return render_template(
+        'resources.html',
+        title='Resources',
+        year=datetime.now().year,
+        message='Below are some additional links to help you connect with Kent State and other students.'
+    )
+
 @app.route('/forum')
 def forum():
     """Renders the Forum page."""
