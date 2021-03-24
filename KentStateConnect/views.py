@@ -154,45 +154,44 @@ def register():
 
 
 
-@app.route('/confirmation', methods =['GET', 'POST']) 
-def generate_confirmation_token(user_email): 
-    msg = '' 
-    if request.method == 'POST' and 'user_email' in request.form: 
-        user_email = request.form['user_email'] 
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) 
-        serializer = URLSafeTimedSerializer(app.config['secret_key'])
-        return serializer.dumps(user_email, salt=app.config['SECURITY_PASSWORD_SALT'])
+#@app.route('/confirmation', methods =['GET', 'POST']) 
+#def generate_confirmation_token(user_email): 
+#    msg = '' 
+#    if request.method == 'POST' and 'user_email' in request.form: 
+#        user_email = request.form['user_email'] 
+#        serializer = URLSafeTimedSerializer(app.config['secret_key'])
+ #       return serializer.dumps(user_email, salt=app.config['SECURITY_PASSWORD_SALT'])
 
-def confirm_token(token, expiration=3600):
-    serializer = URLSafeTimedSerializer(app.config['secret_key'])
-    if request.method == 'POST' and 'user_email' in request.form: 
-        user_email = request.form['user_email'] 
-    try:
-        user_email = serializer.loads(
-            token,
-            salt=app.config['SECURITY_PASSWORD_SALT'],
-            max_age=expiration
-        )
-    except:
-        return False
-    return user_email
+#def confirm_token(token, expiration=3600):
+ #   serializer = URLSafeTimedSerializer(app.config['secret_key'])
+  #  if request.method == 'POST' and 'user_email' in request.form: 
+   #     user_email = request.form['user_email'] 
+    #try:
+     #   user_email = serializer.loads(
+      #      token,
+       #     salt=app.config['SECURITY_PASSWORD_SALT'],
+        #    max_age=expiration
+        #)
+    #except:
+     #   return False
+    #return user_email
 
 #@app.route('/confirm/<token>')
-def confirm_email(token):
-    if request.method == 'POST' and 'user_email' and 'user_confirmed' and 'user_confirmed_on' in request.form: 
-        user_email = request.form['user_email'] 
-        user_confirmed = request.form['user_confirmed']
-        user_confirmed_on = request.form['user_confirmed_on']
-    try:
-        user_email = confirm_token(token)
-    except:
-        flash('The confirmation link is invalid or has expired.', 'danger')
-    user = User.query.filter_by(email=email).first_or_404()
-    if user.confirmed:
-        flash('Account already confirmed. Please login.', 'success')
-    else:
-        user_confirmed = True
-        user_confirmed_on = datetime.datetime.now()
-        mysql.connection.commit() 
-        flash('You have confirmed your account. Thanks!', 'success')
-    return redirect(url_for('home'))
+#def confirm_email(token):
+#    if request.method == 'POST' and 'user_email' and 'user_confirmed' and 'user_confirmed_on' in request.form: 
+#        user_email = request.form['user_email'] 
+#        user_confirmed = request.form['user_confirmed']
+#        user_confirmed_on = request.form['user_confirmed_on']
+#    try:
+#        user_email = confirm_token(token)
+#    except:
+#        flash('The confirmation link is invalid or has expired.', 'danger')
+#    user = User.query.filter_by(email=email).first_or_404()
+#    if user.confirmed:
+#        flash('Account already confirmed. Please login.', 'success')
+#    else:
+#        user_confirmed = True
+#        user_confirmed_on = datetime.datetime.now()
+#        mysql.connection.commit() 
+#        flash('You have confirmed your account. Thanks!', 'success')
+#    return redirect(url_for('home'))
