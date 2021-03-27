@@ -5,12 +5,11 @@ Routes and views for the flask application.
 from datetime import datetime
 from flask import Flask, render_template, redirect, url_for, request, session
 from flask_mysqldb import MySQL
+from flask_mail import Mail, Message
 import MySQLdb.cursors
-import re , os
+import re 
+import uuid
 from KentStateConnect import app
-from itsdangerous import URLSafeTimedSerializer
-from KentStateConnect.email import send_email
-
 
 
 @app.route('/')
@@ -73,32 +72,31 @@ def tutors():
         message='Due to the ongoing pandemic, tutoring will only be held online through Blackboard Collab between 9am to 9pm EST.'
     )
 
-#main config
+# main config and Initializing MySQl
 app.secret_key = '12345'  
-SECURITY_PASSWORD_SALT = 'my_precious_two'
-DEBUG = False
-BCRYPT_LOG_ROUNDS = 13
-WTF_CSRF_ENABLED = True
-DEBUG_TB_ENABLED = False
-DEBUG_TB_INTERCEPT_REDIRECTS = False
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'ksc'
+app.config['threaded']= True
 mysql = MySQL(app) 
 
+
+
 # mail settings
-MAIL_SERVER = 'smtp.googlemail.com'
-MAIL_PORT = 465
-MAIL_USE_TLS = False
-MAIL_USE_SSL = True
+app.config['MAIL_SERVER']= 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'kentstateconnect@gmail.com'
+app.config['MAIL_PASSWORD'] = 'ksc2021!'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
 
-# gmail authentication
-#MAIL_USERNAME = os.environ['MAIL_USERNAME']
-#MAIL_PASSWORD = os.environ['MAIL_PASSWORD']
+# Intialize Mail
+mail = Mail(app)
 
-# mail accounts
-MAIL_DEFAULT_SENDER = 'from@example.com'
+# Enable account activation?
+account_activation_required = True
+
   
 @app.route('/') 
 @app.route('/login', methods =['GET', 'POST']) 
@@ -140,68 +138,43 @@ def register():
         cursor.execute('SELECT * FROM users WHERE username = % s', (username, )) 
         account = cursor.fetchone() 
         if account: 
-            msg = 'Account already exists !'
+            msg = 'Account already exists!'
         elif not re.match(r'[^@]+@[^@]+\.[^@]+', user_email): 
-            msg = 'Invalid email address !'
+            msg = 'Invalid email address!'
         elif not re.match(r'[A-Za-z0-9]+', username): 
-            msg = 'Username must contain only characters and numbers !'
+            msg = 'Username must contain only characters and numbers!'
         elif not username or not user_pass or not user_email: 
             msg = 'Registration failed.'
-        else: 
-            cursor.execute('INSERT INTO users VALUES (NULL, % s, % s, % s, % s, FALSE, NULL, NULL)', (username, user_pass, user_email, formatted_date)) 
+        elif account_activation_required: 
+            activation_code = uuid.uuid4() # Generate a random unique id for activation code
+            cursor.execute('INSERT INTO users VALUES (NULL, % s, % s, % s, % s, FALSE, NULL, NULL, % s)', (username, user_pass, user_email, formatted_date, activation_code)) 
             mysql.connection.commit() 
-#            token = generate_confirmation_token(user_email)
-            msg = 'You have successfully registered !'
-#           confirm_url = url_for('confirm_email', token=token, _external=True)
-#            html = render_template('activate.html', confirm_url=confirm_url)
-#           subject = "Please confirm your email"
-#            send_email(user_email, subject, html)
-#            flash('A confirmation email has been sent via email.', 'success')
-
+            email_info = Message('Account Activation Required', sender = 'kentstateconnect@gmail.com', recipients = [user_email])
+            activate_link = 'http://localhost:5555/activate/' + str(user_email) + '/' + str(activation_code)
+            email_info.body = '<p>Please click the following link to activate your account: <a href="' + str(activate_link) + '">' + str(activate_link) + '</a></p>'
+            mail.send(email_info)
+            msg = 'Please check your email to activate your account!'
+        else:
+            # Account doesnt exists and the form data is valid, now insert new account into users table
+            cursor.execute('INSERT INTO users VALUES (NULL, % s, % s, % s, % s, FALSE, NULL, NULL, % s)', (username, user_pass, user_email, formatted_date, activation_code))
+            mysql.connection.commit()
+            msg = 'You have successfully registered!'
     elif request.method == 'POST': 
-        msg = 'Registration failed.'
+        msg = 'Registration failed. Please fill out the form and try again.'
     return render_template('register.html', msg = msg) 
 
-
-
-#@app.route('/confirmation', methods =['GET', 'POST']) 
-#def generate_confirmation_token(user_email): 
-#    msg = '' 
-#    if request.method == 'POST' and 'user_email' in request.form: 
-#        user_email = request.form['user_email'] 
-#        serializer = URLSafeTimedSerializer(app.config['secret_key'])
- #       return serializer.dumps(user_email, salt=app.config['SECURITY_PASSWORD_SALT'])
-
-#def confirm_token(token, expiration=3600):
- #   serializer = URLSafeTimedSerializer(app.config['secret_key'])
-  #  if request.method == 'POST' and 'user_email' in request.form: 
-   #     user_email = request.form['user_email'] 
-    #try:
-     #   user_email = serializer.loads(
-      #      token,
-       #     salt=app.config['SECURITY_PASSWORD_SALT'],
-        #    max_age=expiration
-        #)
-    #except:
-     #   return False
-    #return user_email
-
-#@app.route('/confirm/<token>')
-#def confirm_email(token):
-#    if request.method == 'POST' and 'user_email' and 'user_confirmed' and 'user_confirmed_on' in request.form: 
-#        user_email = request.form['user_email'] 
-#        user_confirmed = request.form['user_confirmed']
-#        user_confirmed_on = request.form['user_confirmed_on']
-#    try:
-#        user_email = confirm_token(token)
-#    except:
-#        flash('The confirmation link is invalid or has expired.', 'danger')
-#    user = User.query.filter_by(email=email).first_or_404()
-#    if user.confirmed:
-#        flash('Account already confirmed. Please login.', 'success')
-#    else:
-#        user_confirmed = True
-#        user_confirmed_on = datetime.datetime.now()
-#        mysql.connection.commit() 
-#        flash('You have confirmed your account. Thanks!', 'success')
-#    return redirect(url_for('home'))
+# http://localhost:5555/activate/<email>/<code> - this page will activate a users account if the correct activation code and email are provided
+@app.route('/activate/<string:user_email>/<string:code>', methods=['GET'])
+def activate(user_email, code):
+    # Check if the email and code provided exist in the accounts table
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM users WHERE user_email = %s AND activation_code = %s', (user_email, code,))
+    account = cursor.fetchone()
+    if account:
+        # account exists, update the activation code to "activated"
+        cursor.execute('UPDATE users SET activation_code = "activated" WHERE user_email = %s AND activation_code = %s', (user_email, code,))
+        mysql.connection.commit()
+        # print message, or you could redirect to the login page...
+        msg = "Account successfully activated."
+        return render_template('index.html', msg = msg)
+    return 'Account doesn\'t exist with that email or incorrect activation code!'
