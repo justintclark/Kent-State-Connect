@@ -142,7 +142,7 @@ def login():
    # Generate random token that will prevent CSRF attacks
 	token = uuid.uuid4()
 	session['token'] = token 
-	return render_template('login.html', msg = msg , token=token) 
+	return render_template('index.html', msg = msg , token=token) 
   
 @app.route('/logout') 
 def logout(): 
