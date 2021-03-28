@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 17, 2021 at 05:51 PM
+-- Generation Time: Mar 27, 2021 at 08:54 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -74,10 +74,19 @@ CREATE TABLE `users` (
   `user_pass` varchar(25) NOT NULL,
   `user_email` varchar(25) NOT NULL,
   `user_date` datetime DEFAULT current_timestamp(),
-  `user_confirmed` tinyint(1) NOT NULL,
-  `user_confirmed_on` datetime DEFAULT current_timestamp(),
-  `user_admin` tinyint(1) DEFAULT NULL
+  `user_admin` tinyint(1) DEFAULT NULL,
+  `activation_code` varchar(255) NOT NULL DEFAULT '',
+  `rememberme` varchar(255) NOT NULL DEFAULT '',
+  `reset` varchar(255) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `username`, `user_pass`, `user_email`, `user_date`, `user_admin`, `activation_code`, `rememberme`, `reset`) VALUES
+(3, 'testuser', 'test', 'test@kent.edu', '2021-03-17 16:47:31', NULL, '', '', ''),
+(20, 'jtwining', 'test', 'jtwining@kent.edu', '2021-03-27 13:33:34', NULL, 'activated', '', '');
 
 --
 -- Indexes for dumped tables
@@ -138,7 +147,7 @@ ALTER TABLE `topics`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(8) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Constraints for dumped tables

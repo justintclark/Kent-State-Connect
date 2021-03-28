@@ -15,8 +15,9 @@
             <h2 class="word"> 
                 <form action="{{ url_for('register') }}" method="post"> 
                   <div class="msg">{{ msg }}</div> 
-                    <input id="username" name="username" type="text" placeholder="username" class="textbox"/></br></br> 
-                    <input id="password" name="password" type="password" placeholder="password" class="textbox"/></br></br> 
+                    <input id="username" name="username" type="text" placeholder="Username" class="textbox"/></br></br> 
+                    <input id="password" name="password" type="password" placeholder="Password" class="textbox"/></br></br> 
+                    <input id="password" name="cpassword" type="password" placeholder="Confirm Password" class="textbox"/></br></br></br> 
                     <input id="email" name="email" type="text" placeholder="email" class="textbox"/></br></br> 
                     <input type="submit" class="btn" value="Sign Up"></br> 
                 </form> 
