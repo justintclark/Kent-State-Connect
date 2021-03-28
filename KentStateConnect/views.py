@@ -3,7 +3,7 @@ Routes and views for the flask application.
 """
 
 from datetime import datetime
-from flask import Flask, render_template, redirect, url_for, request, session
+from flask import Flask, render_template, redirect, url_for, request, session, make_response
 from flask_mysqldb import MySQL
 from flask_mail import Mail, Message
 import MySQLdb.cursors
@@ -128,8 +128,8 @@ def login():
 				hash = account['username'] + request.form['password'] + app.secret_key
 				hash = hashlib.sha1(hash.encode())
 				hash = hash.hexdigest();
-				# the cookie expires in 180 days
-				expire_date = datetime.datetime.now() + datetime.timedelta(days=180)
+				# the cookie expires in 60 days
+				expire_date = datetime.datetime.now() + datetime.timedelta(days=60)
 				resp = make_response('Success', 200)
 				resp.set_cookie('rememberme', hash, expires=expire_date)
 				# Update rememberme in accounts table to the cookie hash
@@ -142,14 +142,17 @@ def login():
    # Generate random token that will prevent CSRF attacks
 	token = uuid.uuid4()
 	session['token'] = token 
-	return render_template('index.html', msg = msg , token=token) 
+	return render_template('login.html', msg = msg , token=token) 
   
 @app.route('/logout') 
 def logout(): 
 	session.pop('loggedin', None) 
 	session.pop('id', None) 
 	session.pop('username', None) 
-	return redirect(url_for('login')) 
+	# Remove cookie data "remember me"
+	resp = make_response(render_template('login.html'))
+	resp.set_cookie('rememberme', expires=0)
+	return resp
   
 @app.route('/register', methods =['GET', 'POST']) 
 def register(): 
