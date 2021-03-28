@@ -88,7 +88,7 @@ app.config['DOMAIN'] = 'http://localhost:5555'
 app.config['MAIL_SERVER']= 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'kentstateconnect@gmail.com'
-app.config['MAIL_PASSWORD'] = 'ksc2021!'
+app.config['MAIL_PASSWORD'] = 'Capstoneproject!'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 
