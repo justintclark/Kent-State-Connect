@@ -15,11 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from KentStateConnect.views import *
+from Discussion_forum.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',forum,name='forum'),
+    path('',home,name='home'),
     path('addInForum/',addInForum,name='addInForum'),
     path('addInDiscussion/',addInDiscussion,name='addInDiscussion'),
 ]
