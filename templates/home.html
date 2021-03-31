@@ -31,7 +31,7 @@
                     <h5 class="card-title">
                         <a href='{{forum.link}}'><h1>{{forum.topic}}</h1></a>
                         <div class="card-body container">
-                            <p> By: {{forum.name}}</p>
+                            <p> By: {{forum.name}}</p>{{forum.date_created}}<hr>
                             <p>{{forum.description}}</p>
                             <br>
                             <br>
@@ -42,7 +42,7 @@
                             {% if objs.forum == forum %}
                                <b>{{objs.name}}</b>:<br>
                                {{objs.discuss}}
-                               <br><hr>
+                               <br><br><br>
                             {% endif %}
                             {%endfor%}
                             {%endfor%}
