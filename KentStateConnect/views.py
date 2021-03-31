@@ -156,7 +156,8 @@ def register():
 		username = request.form['username'] 
 		user_pass = request.form['password'] 
 		cpassword = request.form['cpassword']
-		user_email = request.form['email'] 
+		KSUID = request.form['email']
+		user_email = KSUID + "@kent.edu" 
 		now = datetime.now()
 		# Hash the password
 		hash = user_pass + app.secret_key

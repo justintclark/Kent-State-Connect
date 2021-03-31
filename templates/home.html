@@ -18,7 +18,7 @@
             Currently active forums: {{count}}
             <form method="POST" action="{% url 'addInForum' %}">
                 {% csrf_token %}
-            <button class="btn btn-success" style="width:fit-content; padding: 4px; margin:10px;">Add more</button>
+            <button class="btn btn-success" style="width:fit-content; padding: 4px; margin:10px;">Create a Post</button>
             </form>
         </h2>
             <div class="card-columns" style="padding: 10px; margin: 20px;"></div>
@@ -29,18 +29,18 @@
                 <div class="card box container">
                     <br>
                     <h5 class="card-title">
-                        <a href='{{forum.link}}'><h3>{{forum.topic}}</h3></a> 
+                        <a href='{{forum.link}}'><h1>{{forum.topic}}</h1></a>
                         <div class="card-body container">
-                                <p>{{forum.description}}</p>
-                            </h5>
-                            <hr>
                             <p> By: {{forum.name}}</p>
-                            email- {{forum.email}}
+                            <hr>
+                            <p>{{forum.description}}</p>
+                            </h5>
                             <hr>     
-                            <h4>Views from other users</h4>
+                            <h4>Replies from other users</h4>
                             {%for discuss in discussions%}
                             {%for objs in discuss%}  
                             {% if objs.forum == forum %}
+                               <b>{{objs.name}}</b>
                                {{objs.discuss}}
                                <br>
                             {% endif %}
@@ -48,7 +48,7 @@
                             {%endfor%}
                             <form method="POST" action="{% url 'addInDiscussion' %}">
                                 {% csrf_token %}
-                            <button class="btn btn-success" style="width:fit-content; padding: 4px; margin:10px;">Add more</button>
+                            <button class="btn btn-success" style="width:fit-content; padding: 4px; margin:10px;">Reply</button>
                             </form>
                         </div>
                 </div>
