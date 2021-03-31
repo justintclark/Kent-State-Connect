@@ -34,13 +34,13 @@
                             <p> By: {{forum.name}}</p>
                             <hr>
                             <p>{{forum.description}}</p>
-                            </h5>
+
                             <hr>     
-                            <h4>Replies from other users</h4>
+                            <h4>Replies</h4>
                             {%for discuss in discussions%}
                             {%for objs in discuss%}  
                             {% if objs.forum == forum %}
-                               <b>{{objs.name}}</b>
+                               <b>{{objs.name}}</b>:
                                {{objs.discuss}}
                                <br>
                             {% endif %}
