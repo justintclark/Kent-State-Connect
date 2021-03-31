@@ -32,17 +32,17 @@
                         <a href='{{forum.link}}'><h1>{{forum.topic}}</h1></a>
                         <div class="card-body container">
                             <p> By: {{forum.name}}</p>
-                            <hr>
                             <p>{{forum.description}}</p>
-
+                            <br>
+                            <br>
                             <hr>     
                             <h4>Replies</h4>
                             {%for discuss in discussions%}
                             {%for objs in discuss%}  
                             {% if objs.forum == forum %}
-                               <b>{{objs.name}}</b>:
+                               <b>{{objs.name}}</b>:<br>
                                {{objs.discuss}}
-                               <br>
+                               <br><hr>
                             {% endif %}
                             {%endfor%}
                             {%endfor%}
