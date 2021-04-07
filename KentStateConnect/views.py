@@ -55,12 +55,7 @@ def resources():
 @app.route('/forum')
 def forum():
 	"""Renders the Forum page."""
-	return render_template(
-		'forum.html',
-		title='Forum',
-		year=datetime.now().year,
-		message='The forum is currently under development.'
-	)
+	return redirect('http://localhost:8000')
 
 @app.route('/tutors')
 def tutors():
@@ -161,7 +156,8 @@ def register():
 		username = request.form['username'] 
 		user_pass = request.form['password'] 
 		cpassword = request.form['cpassword']
-		user_email = request.form['email'] 
+		KSUID = request.form['email']
+		user_email = KSUID + "@kent.edu" 
 		now = datetime.now()
 		# Hash the password
 		hash = user_pass + app.secret_key
