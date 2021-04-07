@@ -14,59 +14,76 @@
     </style>
 </head>
 
-<body>
-       <h2 class="jumbotron">
-           <p style ="text-align: center;"> Kent State Connect Forums
-            <br>
-            
-            <a href="http://localhost:5555/home">Home</a> | 
-            <a href="http://localhost:5555/about">About</a> | 
-            <a href="http://localhost:5555/contact">Contact</a> | 
-            <a href="http://localhost:5555/resources">Resources</a> </p>
-            <br>        </h2>
+<body style="background-color: rgb(231, 231, 231);">
+       <h2 class="top-bar">
+            <p style ="text-align: left;">  
+            <a href="http://localhost:5555/home"><button class="main_page_links">Home</button></a>  
+            <a href="http://localhost:5555/about"><button class="main_page_links">About</button></a>  
+            <a href="http://localhost:5555/contact"><button class="main_page_links">Contact</button></a>  
+            <a href="http://localhost:5555/resources"><button class="main_page_links">Resources</button></a> </p>    </h2>
             <!-- Currently active forums: {{count}} -->
+            <div style="padding-left:27vw;">
             <form method="POST" action="{% url 'addInForum' %}">
                 {% csrf_token %}
             <button class="btn btn-success" style="width:fit-content; padding: 4px; margin:10px;">Create a Post</button>
-            </form>
-            <div class="card-columns" style="padding: 10px; margin: 20px;"></div>
+            </form></div>
             
+            <!--<div class="card-columns" style="padding-right: 10px; marg;"></div>-->
             
             {%for forum in forums %}
-            
-                <div class="card box container">
-                    <br>
-                    <h5 class="card-title">
-                        <a href='{{forum.link}}'><h1>{{forum.topic}}</h1></a>
+
+                <div class="card box container" style="padding: 10px;">
+                    <p align="right"><button class="btn btn-success" style="width:fit-content;">Delete</button></p>
+
+                    <h5>
+                        <h1>{{forum.topic}}</h1>
                         <div class="card-body container">
                             <p> By: {{forum.name}}</p>{{forum.date_created}}<hr>
                             <p>{{forum.description}}</p>
                             <br>
                             <br>
+                            <form method="POST" action="{% url 'addInDiscussion' %}">
+                                {% csrf_token %}
+                                <p align="right"><button class="btn btn-success" style="width:fit-content;">Reply</button></p>
+                            </form>
                             <hr>     
                             <h4>Replies</h4>
                             {%for discuss in discussions%}
                             {%for objs in discuss%}  
                             {% if objs.forum == forum %}
+                            <p align="right"><button class="material-icons" style="width:fit-content; font-size:10px;">Delete</button></p>
                                <b>{{objs.name}}</b>:<br>
                                {{objs.discuss}}
                                <br><br><br>
                             {% endif %}
                             {%endfor%}
                             {%endfor%}
-                            <form method="POST" action="{% url 'addInDiscussion' %}">
-                                {% csrf_token %}
-                            <button class="btn btn-success" style="width:fit-content; padding: 4px; margin:10px;">Reply</button>
-                            </form>
+
                         </div>
                 </div>
             </div>
             <br>
             
             {%endfor%}
-          
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </body>
 </html>
+<style>
+    .top-bar{
+        color: white;
+        background: black;
+        padding: 1px;
+    }
+    
+    .main_page_links{
+        font-size: 16px;
+        color: rgb(150, 150, 150);
+        background: transparent;
+        padding: transparent;
+        border: transparent;
+    }
+
+</style>
