@@ -22,4 +22,7 @@ urlpatterns = [
     path('',home,name='home'),
     path('addInForum/',addInForum,name='addInForum'),
     path('addInDiscussion/',addInDiscussion,name='addInDiscussion'),
+    path('GeneralDiscussions/', GeneralDiscussions,name="GeneralDiscussions"),
+    path('ClassDiscussions/', ClassDiscussions,name="ClassDiscussions"),
+    path('TutoringDiscussions/', TutoringDiscussions,name="TutoringDiscussions"),
 ]
