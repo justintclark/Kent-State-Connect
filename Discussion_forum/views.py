@@ -5,9 +5,13 @@ from .forms import *
 
 def home(request):
     forums=forum.objects.all()
-    #count=forums.count()
+    generalcount=forum.objects.filter(category=1).count()
+    classcount=forum.objects.filter(category=2).count()
+    tutoringcount=forum.objects.filter(category=3).count()
     context={'forums':forums,
-            }
+            'generalcount':generalcount,
+            'classcount':classcount,
+            'tutoringcount':tutoringcount}
     return render(request,'home.html', context)
 
 def addInForum(request):
