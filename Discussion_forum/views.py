@@ -31,7 +31,7 @@ def addInDiscussion(request):
     return render(request,'addInDiscussion.html',context)
 
 def GeneralDiscussions(request):
-    forums=forum.objects.filter(category="1")
+    forums=forum.objects.filter(category="1").order_by('-id')
     count=forums.count()
     discussions=[]
     for i in forums:
@@ -43,7 +43,7 @@ def GeneralDiscussions(request):
     return render(request, 'GeneralDiscussions.html', context)
 
 def ClassDiscussions(request):
-    forums=forum.objects.filter(category="2")
+    forums=forum.objects.filter(category="2").order_by('-id')
     count=forums.count()
     discussions=[]
     for i in forums:
@@ -55,7 +55,7 @@ def ClassDiscussions(request):
     return render(request, 'ClassDiscussions.html', context)
 
 def TutoringDiscussions(request):
-    forums=forum.objects.filter(category="3")
+    forums=forum.objects.filter(category="3").order_by('-id')
     count=forums.count()
     discussions=[]
     for i in forums:
