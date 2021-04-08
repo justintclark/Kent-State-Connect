@@ -3,7 +3,7 @@ from django.db import models
 
 #categories
 class Category(models.Model):
-    category_id=models.CharField(max_length=200)
+    Cat_name=models.CharField(max_length=200)
 
 #parent model
 class forum(models.Model):
