@@ -22,19 +22,17 @@
             <a href="http://localhost:5555/contact"><button class="main_page_links">Contact</button></a>  
             <a href="http://localhost:5555/resources"><button class="main_page_links">Resources</button></a>
             <a href="http://localhost:8000"><button class="main_page_links">Directory</button></a> </p>    </h2>
-            <!-- Currently active forums: {{count}} -->
+
             <div style="padding-left:27vw;">
             <form method="POST" action="{% url 'addInForum' %}">
                 {% csrf_token %}
             <button class="btn btn-success" style="width:fit-content; padding: 4px; margin:10px;">Create a Post</button>
             </form></div>
             
-            <!--<div class="card-columns" style="padding-right: 10px; marg;"></div>-->
-            
             {%for forum in forums %}
 
                 <div class="card box container" style="padding: 10px;">
-                    <p align="right"><button class="btn btn-success" style="width:fit-content;">Delete</button></p>
+                    <form method="POST" action="http://localhost:8000/{{forum.id}}" >{% csrf_token %}<p align="right"></p><button class="btn btn-success" style="width:fit-content;">Delete</button></p></form>
 
                     <h5>
                         <h1>{{forum.topic}}</h1>
@@ -43,7 +41,7 @@
                             <p>{{forum.description}}</p>
                             <br>
                             <br>
-                            <form method="POST" action="{% url 'addInDiscussion' %}">
+                            <form method="GET" action="{% url 'addInDiscussion' %}">
                                 {% csrf_token %}
                                 <p align="right"><button class="btn btn-success" style="width:fit-content;">Reply</button></p>
                             </form>

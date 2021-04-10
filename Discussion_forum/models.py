@@ -11,7 +11,6 @@ class forum(models.Model):
     email=models.CharField(max_length=200,null=False)
     topic= models.CharField(max_length=300)
     description = models.CharField(max_length=10000,blank=False)
-    #link = models.CharField(max_length=100 ,null =True)
     date_created=models.DateTimeField(auto_now_add=True,null=True)
     category = models.ForeignKey(Category,blank=True,on_delete=models.CASCADE)
     

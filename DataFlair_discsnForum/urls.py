@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 from Discussion_forum.views import *
 
 urlpatterns = [
@@ -25,4 +25,5 @@ urlpatterns = [
     path('GeneralDiscussions/', GeneralDiscussions,name="GeneralDiscussions"),
     path('ClassDiscussions/', ClassDiscussions,name="ClassDiscussions"),
     path('TutoringDiscussions/', TutoringDiscussions,name="TutoringDiscussions"),
+    path('<int:pk>', delete, name="deleteforum")
 ]

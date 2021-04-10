@@ -1,4 +1,7 @@
+from django.views.generic import View
 from django.shortcuts import render,redirect
+from django.forms.models import modelform_factory
+from django.http import HttpResponse
 from .models import * 
 from .forms import * 
 # Create your views here.
@@ -68,3 +71,8 @@ def TutoringDiscussions(request):
               'count':count,
               'discussions':discussions}
     return render(request, 'TutoringDiscussions.html', context)
+
+def delete(request, pk):
+    forums=forum.objects.get(pk=pk)
+    forums.delete()
+    return HttpResponse("Forum deleted successfully.")
