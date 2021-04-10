@@ -25,5 +25,6 @@ urlpatterns = [
     path('GeneralDiscussions/', GeneralDiscussions,name="GeneralDiscussions"),
     path('ClassDiscussions/', ClassDiscussions,name="ClassDiscussions"),
     path('TutoringDiscussions/', TutoringDiscussions,name="TutoringDiscussions"),
-    path('<int:pk>', delete, name="deleteforum")
+    path('deleteforum/<int:pk>', delete, name="deleteforum"),
+    path('deletereply/<int:pk>', deletereply, name="deletereply")
 ]

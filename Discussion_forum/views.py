@@ -76,3 +76,9 @@ def delete(request, pk):
     forums=forum.objects.get(pk=pk)
     forums.delete()
     return HttpResponse("Forum deleted successfully.")
+
+def deletereply(request, pk):
+    print(pk)
+    reply=Discussion.objects.get(pk=pk)
+    reply.delete()
+    return HttpResponse("Reply deleted successfully.")

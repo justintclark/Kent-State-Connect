@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                 ('description', models.CharField(blank=True, max_length=1000)),
                 #('link', models.CharField(max_length=100, null=True)),
                 ('date_created', models.DateTimeField(auto_now_add=True, null=True)),
-                ('category', models.ForeignKey(blank=True, on_delete=django.db.models.deletion.CASCADE, to='Discussion_forum.categories'))
+                ('category', models.ForeignKey(blank=True, on_delete=django.db.models.deletion.CASCADE, to='Discussion_forum.category_id'))
             ],
         ),
         migrations.CreateModel(

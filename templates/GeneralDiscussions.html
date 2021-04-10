@@ -32,7 +32,7 @@
             {%for forum in forums %}
 
                 <div class="card box container" style="padding: 10px;">
-                    <form method="POST" action="http://localhost:8000/{{forum.id}}" >{% csrf_token %}<p align="right"><button class="btn btn-success" style="width:fit-content;">Delete</button></p></form>
+                    <form method="POST" action="http://localhost:8000/deleteforum/{{forum.id}}" >{% csrf_token %}<p align="right"><button class="btn btn-success" style="width:fit-content;">Delete</button></p></form>
 
                     <h5>
                         <h1>{{forum.topic}}</h1>
@@ -50,8 +50,8 @@
                             {%for discuss in discussions%}
                             {%for objs in discuss%}  
                             {% if objs.forum == forum %}
-                            <p align="right"><button class="material-icons" style="width:fit-content; font-size:10px;">Delete</button></p>
-                               <b>{{objs.name}}</b>:<br>
+                            <form method="POST" action="http://localhost:8000/deletereply/{{objs.id}}" >{% csrf_token %} <p align="right"><button class="btn btn-success" style="width:fit-content; font-size:10px;">Delete</button></p></form>
+                               <b>{{objs.name}}</b>: {{objs.id}}<br>
                                {{objs.discuss}}
                                <br><br><br>
                             {% endif %}
