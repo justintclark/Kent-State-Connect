@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 27, 2021 at 08:54 PM
+-- Generation Time: Apr 10, 2021 at 09:40 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -71,7 +71,7 @@ CREATE TABLE `topics` (
 CREATE TABLE `users` (
   `user_id` int(8) NOT NULL,
   `username` varchar(25) NOT NULL,
-  `user_pass` varchar(25) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `user_email` varchar(25) NOT NULL,
   `user_date` datetime DEFAULT current_timestamp(),
   `user_admin` tinyint(1) DEFAULT NULL,
@@ -84,9 +84,8 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `user_pass`, `user_email`, `user_date`, `user_admin`, `activation_code`, `rememberme`, `reset`) VALUES
-(3, 'testuser', 'test', 'test@kent.edu', '2021-03-17 16:47:31', NULL, '', '', ''),
-(20, 'jtwining', 'test', 'jtwining@kent.edu', '2021-03-27 13:33:34', NULL, 'activated', '', '');
+INSERT INTO `users` (`user_id`, `username`, `password`, `user_email`, `user_date`, `user_admin`, `activation_code`, `rememberme`, `reset`) VALUES
+(31, 'jtwining', '448ed7416fce2cb66c285d182b1ba3df1e90016d', 'jtwining@kent.edu', '2021-04-10 15:16:53', NULL, 'activated', '', '');
 
 --
 -- Indexes for dumped tables
@@ -147,7 +146,7 @@ ALTER TABLE `topics`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `user_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- Constraints for dumped tables
