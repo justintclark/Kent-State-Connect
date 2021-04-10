@@ -34,7 +34,7 @@
             {%for forum in forums %}
 
                 <div class="card box container" style="padding: 10px;">
-                    <form method="POST" action="http://localhost:8000/{{forum.id}}" >{% csrf_token %}<p align="right"></p><button class="btn btn-success" style="width:fit-content;">Delete</button></p></form>
+                    <form method="POST" action="http://localhost:8000/{{forum.id}}" >{% csrf_token %}<p align="right"><button class="btn btn-success" style="width:fit-content;">Delete</button></p></form>
 
                     <h5>
                         <h1>{{forum.topic}}</h1>
