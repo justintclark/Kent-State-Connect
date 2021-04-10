@@ -1,19 +1,21 @@
+from django.views.generic import View
 from django.shortcuts import render,redirect
+from django.forms.models import modelform_factory
+from django.http import HttpResponse
 from .models import * 
 from .forms import * 
 # Create your views here.
 
 def home(request):
     forums=forum.objects.all()
-    count=forums.count()
-    discussions=[]
-    for i in forums:
-        discussions.append(i.discussion_set.all())
-
+    generalcount=forum.objects.filter(category=1).count()
+    classcount=forum.objects.filter(category=2).count()
+    tutoringcount=forum.objects.filter(category=3).count()
     context={'forums':forums,
-              'count':count,
-              'discussions':discussions}
-    return render(request,'home.html',context)
+            'generalcount':generalcount,
+            'classcount':classcount,
+            'tutoringcount':tutoringcount}
+    return render(request,'home.html', context)
 
 def addInForum(request):
     form = CreateInForum()
@@ -34,3 +36,49 @@ def addInDiscussion(request):
             return redirect('/')
     context ={'form':form}
     return render(request,'addInDiscussion.html',context)
+
+def GeneralDiscussions(request):
+    forums=forum.objects.filter(category="1").order_by('-id')
+    count=forums.count()
+    discussions=[]
+    for i in forums:
+        discussions.append(i.discussion_set.all())
+
+    context={'forums':forums,
+              'count':count,
+              'discussions':discussions}
+    return render(request, 'GeneralDiscussions.html', context)
+
+def ClassDiscussions(request):
+    forums=forum.objects.filter(category="2").order_by('-id')
+    count=forums.count()
+    discussions=[]
+    for i in forums:
+        discussions.append(i.discussion_set.all())
+
+    context={'forums':forums,
+              'count':count,
+              'discussions':discussions}
+    return render(request, 'ClassDiscussions.html', context)
+
+def TutoringDiscussions(request):
+    forums=forum.objects.filter(category="3").order_by('-id')
+    count=forums.count()
+    discussions=[]
+    for i in forums:
+        discussions.append(i.discussion_set.all())
+    context={'forums':forums,
+              'count':count,
+              'discussions':discussions}
+    return render(request, 'TutoringDiscussions.html', context)
+
+def delete(request, pk):
+    forums=forum.objects.get(pk=pk)
+    forums.delete()
+    return HttpResponse("Forum deleted successfully.")
+
+def deletereply(request, pk):
+    print(pk)
+    reply=Discussion.objects.get(pk=pk)
+    reply.delete()
+    return HttpResponse("Reply deleted successfully.")
