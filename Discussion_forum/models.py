@@ -17,7 +17,7 @@ class forum(models.Model):
     date_created=models.DateTimeField(auto_now_add=True,null=True)
     
     def __str__(self):
-        return str(self.topic)
+        return str(self.title)
 
 #child model
 class Discussion(models.Model):

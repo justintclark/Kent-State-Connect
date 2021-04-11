@@ -12,3 +12,4 @@ class CreateInDiscussion(ModelForm):
     class Meta:
         model= Discussion
         fields = "__all__"
+        widgets = { 'discuss': forms.Textarea(attrs={'cols':60, 'rows':10})} 
