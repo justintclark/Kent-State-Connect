@@ -82,6 +82,17 @@ account_activation_required = True
 # Enable CSRF Protection?
 csrf_protection = False
 
+# This will be the home page, only accessible for loggedin users
+@app.route('/')
+@app.route('/home')
+def home():
+	# Check if user is loggedin
+	if loggedin():
+		# User is loggedin show them the home page
+		return render_template('home.html', username=session['username'])
+	# User is not loggedin redirect to login page
+	return render_template('home.html')
+
 @app.route('/') 
 @app.route('/login', methods =['GET', 'POST']) 
 def login(): 
@@ -111,7 +122,7 @@ def login():
 				hash = request.form['password'] + app.secret_key
 				hash = hashlib.sha1(hash.encode())
 				hash = hash.hexdigest();
-				# the cookie expires in 30 days
+				# The cookie expires in 30 days
 				expire_date = datetime.datetime.now() + datetime.timedelta(days=30)
 				resp = make_response('Success', 200)
 				resp.set_cookie('rememberme', hash, expires=expire_date)
@@ -126,17 +137,8 @@ def login():
 	token = uuid.uuid4()
 	session['token'] = token 
 	return render_template('login.html', msg = msg , token=token) 
-  
-@app.route('/logout') 
-def logout(): 
-	session.pop('loggedin', None) 
-	session.pop('id', None) 
-	session.pop('username', None) 
-	# Remove cookie data "remember me"
-	resp = make_response(render_template('login.html'))
-	resp.set_cookie('rememberme', expires=0)
-	return resp
 
+# Check if logged in, update session if cookie for "remember me" exists 
 def loggedin():
 	if 'loggedin' in session:
 		return True
@@ -154,7 +156,16 @@ def loggedin():
 	# Account not logged in return false
 	return False
 
-  
+@app.route('/logout') 
+def logout(): 
+	session.pop('loggedin', None) 
+	session.pop('id', None) 
+	session.pop('username', None) 
+	# Remove cookie data "remember me"
+	resp = make_response(render_template('login.html'))
+	resp.set_cookie('rememberme', expires=0)
+	return resp
+
 @app.route('/register', methods =['GET', 'POST']) 
 def register(): 
 	msg = '' 
@@ -171,7 +182,7 @@ def register():
 		hashed_password = hash.hexdigest();
 		# Checking if account exists 
 		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) 
-		cursor.execute('SELECT * FROM users WHERE username = % s', (username, )) 
+		cursor.execute('SELECT * FROM users WHERE username = % s', (username,)) 
 		account = cursor.fetchone() 
 		if account: 
 			msg = 'Account already exists!'
@@ -185,7 +196,7 @@ def register():
 			return 'Passwords do not match!'
 		elif account_activation_required: 
 			activation_code = uuid.uuid4() # Generate a random unique id for activation code
-			cursor.execute('INSERT INTO users (username, password, user_email, activation_code) VALUES  (%s, %s, %s, %s)', (username, hashed_password, user_email, activation_code)) 
+			cursor.execute('INSERT INTO users (username, password, user_email, activation_code) VALUES  (%s, %s, %s, %s)', (username, hashed_password, user_email, activation_code,)) 
 			mysql.connection.commit() 
 			email_info = Message('Account Activation Required', sender = 'kentstateconnect@gmail.com', recipients = [user_email])
 			activate_link = app.config['DOMAIN'] + url_for('activate', user_email=user_email, code=str(activation_code))
@@ -197,7 +208,7 @@ def register():
 			msg = 'Please check your email to activate your account!'
 		else:
 			# Account doesnt exists and the form data is valid, now insert new account into users table
-			cursor.execute('INSERT INTO users (username, password, user_email, activation_code) VALUES  (%s, %s, %s, %s)', (username, hashed_password, user_email, activation_code)) 
+			cursor.execute('INSERT INTO users (username, password, user_email, activation_code) VALUES  (%s, %s, %s, %s)', (username, hashed_password, user_email, activation_code,)) 
 			mysql.connection.commit()
 			msg = 'You have successfully registered!'
 	elif request.method == 'POST': 
@@ -220,16 +231,7 @@ def activate(user_email, code):
 		return render_template('home.html', msg = msg)
 	return 'Account doesn\'t exist with that email or incorrect activation code!'
 
-# This will be the home page, only accessible for loggedin users
-@app.route('/')
-@app.route('/home')
-def home():
-	# Check if user is loggedin
-	if loggedin():
-		# User is loggedin show them the home page
-		return render_template('home.html', username=session['username'])
-	# User is not loggedin redirect to login page
-	return render_template('home.html')
+
 
 # This will be the profile page, only accessible for loggedin users
 @app.route('/profile')
@@ -261,7 +263,7 @@ def edit_profile():
 			password = request.form['password']
 			user_email = request.form['email']
 			# Retrieve account by the username
-			cursor.execute('SELECT * FROM accounts WHERE username = %s', (username))
+			cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,))
 			account = cursor.fetchone()
 			# validation check
 			if not re.match(r'[^@]+@[^@]+\.[^@]+', user_email):
@@ -298,15 +300,15 @@ def forgotpassword():
 	if request.method == 'POST' and 'email' in request.form:
 		email = request.form['email']
 		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-		cursor.execute('SELECT * FROM users WHERE user_email = %s', (email))
+		cursor.execute('SELECT * FROM users WHERE user_email = %s', (email,))
 		account = cursor.fetchone()
 		if account:
 			# Generate unique ID
 			reset_code = uuid.uuid4()
 			# Update the reset column in the accounts table to reflect the generated ID
-			cursor.execute('UPDATE users SET reset = %s WHERE email = %s', (reset_code, email))
+			cursor.execute('UPDATE users SET reset = %s WHERE user_email = %s', (reset_code, email,))
 			mysql.connection.commit()
-			email_info = Message('Password Reset', sender = app.config['kentstateconnect@gmail.com'], recipients = [email])
+			email_info = Message('Password Reset', sender = app.config['MAIL_USERNAME'], recipients = [email])
 			# Generate reset password link
 			reset_link = app.config['DOMAIN'] + url_for('resetpassword', email = email, code = str(reset_code))
 			# Email Info
@@ -320,11 +322,11 @@ def forgotpassword():
 
 # Proceed to reset the user's password
 @app.route('/resetpassword/<string:email>/<string:code>', methods=['GET', 'POST'])
-def resetpassword(user_email, code):
+def resetpassword(email, code):
 	msg = ''
 	cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 	# Retrieve the account with the email and reset code provided from the GET request
-	cursor.execute('SELECT * FROM users WHERE user_email = %s AND reset = %s', (user_email, code,))
+	cursor.execute('SELECT * FROM users WHERE user_email = %s AND reset = %s', (email, code,))
 	account = cursor.fetchone()
 	# If account exists
 	if account:
@@ -339,7 +341,7 @@ def resetpassword(user_email, code):
 				hash = hashlib.sha1(hash.encode())
 				npassword = hash.hexdigest();
 				# Update the user's password
-				cursor.execute('UPDATE users SET password = %s, reset = "" WHERE user_email = %s', (npassword, user_email,))
+				cursor.execute('UPDATE users SET password = %s, reset = "" WHERE user_email = %s', (npassword, email,))
 				mysql.connection.commit()
 				msg = 'Your password has been reset, you can now <a href="' + url_for('login') + '">login</a>!'
 			else:
