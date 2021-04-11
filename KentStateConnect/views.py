@@ -96,8 +96,14 @@ def home():
 @app.route('/') 
 @app.route('/login', methods =['GET', 'POST']) 
 def login(): 
+	# Redirect user to home page if logged-in
+	if loggedin():
+		return redirect(url_for('home'))
+	# Output message if something goes wrong...
 	msg = '' 
+	# Checks if "username" and "password" POST requests exist (user submitted form)
 	if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'token' in request.form: 
+		# Create variables for ease of use
 		username = request.form['username'] 
 		password = request.form['password'] 
 		token = request.form['token']
@@ -105,10 +111,13 @@ def login():
 		hash =	password + app.secret_key
 		hash = hashlib.sha1(hash.encode())
 		password = hash.hexdigest();
+		# Check if account exists using MySQL
 		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) 
-		cursor.execute('SELECT * FROM users WHERE username = % s AND password = % s', (username, password)) 
+		cursor.execute('SELECT * FROM users WHERE username = % s AND password = % s', (username, password,)) 
+		# Fetch record and return result
 		account = cursor.fetchone() 
 		if account: 
+			# If account exists in users table in the database
 			if account_activation_required and account['activation_code'] != 'activated' and account['activation_code'] != '':
 				return 'Please activate your account to login!'
 			if csrf_protection and str(token) != str(session['token']):
@@ -127,7 +136,7 @@ def login():
 				resp = make_response('Success', 200)
 				resp.set_cookie('rememberme', hash, expires=expire_date)
 				# Update rememberme in accounts table to the cookie hash
-				cursor.execute('UPDATE users SET rememberme = %s WHERE id = %s', (hash, account['id'],))
+				cursor.execute('UPDATE users SET rememberme = %s WHERE id = %s', (hash, account['user_id'],))
 				mysql.connection.commit()
 				return resp
 			return "Success"
@@ -230,8 +239,6 @@ def activate(user_email, code):
 		msg = "Account successfully activated."
 		return render_template('home.html', msg = msg)
 	return 'Account doesn\'t exist with that email or incorrect activation code!'
-
-
 
 # This will be the profile page, only accessible for loggedin users
 @app.route('/profile')
