@@ -4,6 +4,8 @@ from django.db import models
 #categories
 class Category(models.Model):
     Cat_name=models.CharField(max_length=200)
+    def __str__(self):
+        return self.Cat_name
 
 #parent model
 class forum(models.Model):

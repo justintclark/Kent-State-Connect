@@ -15,9 +15,6 @@
     <form action="{% url 'addInForum' %}" method="POST" style="background: white;">
         {% csrf_token %}
         {{form.as_p}}
-        Category Object 1: General Discussions <br>
-        Category Object 2: Class Discussions <br>
-        Category Object 3: Tutoring Discussions <br>
         <input type="submit" class="btn btn-success" value="submit">
     </form>
 </body>
