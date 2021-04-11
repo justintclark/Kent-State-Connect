@@ -9,12 +9,12 @@ class Category(models.Model):
 
 #parent model
 class forum(models.Model):
+    category = models.ForeignKey(Category,blank=False,on_delete=models.CASCADE)
+    title= models.CharField(max_length=300)
     name=models.CharField(max_length=200)
     email=models.CharField(max_length=200,null=False)
-    topic= models.CharField(max_length=300)
-    description = models.CharField(max_length=10000,blank=False)
+    description=models.CharField(max_length=10000,blank=False)
     date_created=models.DateTimeField(auto_now_add=True,null=True)
-    category = models.ForeignKey(Category,blank=True,on_delete=models.CASCADE)
     
     def __str__(self):
         return str(self.topic)
