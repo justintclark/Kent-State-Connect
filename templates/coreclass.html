@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kent State Connect</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"0>
+    <style>
+        .box{
+            border: 4px solid black;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body style="background-color: rgb(231, 231, 231);">
+    <h2 class="top-bar">
+         <p style ="text-align: left;">  
+         <a href="http://localhost:5555/home"><button class="main_page_links">Home</button></a>  
+         <a href="http://localhost:5555/about"><button class="main_page_links">About</button></a>  
+         <a href="http://localhost:5555/contact"><button class="main_page_links">Contact</button></a>  
+         <a href="http://localhost:5555/resources"><button class="main_page_links">Resources</button></a>
+         <a href="http://localhost:8000"><button class="main_page_links">Directory</button></a>
+         </p>    
+    </h2>
+    <p align=center><img src="https://i.imgur.com/p8RQptU.jpg" alt="KSU" width=44% height=44%></p>
+    <div class="card-body container" style="padding: 30px; background: white;">
+        <div class="card-body container">
+        <a href="http://localhost:8000/ClassDiscussions/Core/IntroToCS"><h1>Introduction to Computer Science</h1></a> 
+        <p align="right>">Total Discussions: {{ICScount}}</p>
+        Talk about the Introduction to Computer Science class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Core/ComputerScience1A"><h1>Computer Science 1A</h1></a> 
+        <p align="right>">Total Discussions: {{CS1Acount}}</p>
+        Talk about the Computer Science 1A class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Core/ComputerScience1B"><h1>Computer Science 1B</h1></a>
+        <p align="right>">Total Discussions: {{CS1Bcount}}</p>
+        Talk about the Computer Science 1B class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Core/ComputerScience2"><h1>Computer Science 2</h1></a>
+        <p align="right>">Total Discussions: {{CS2count}}</p>
+        Talk about things related to Computer Science II: Data Structures and Abstraction here. 
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Core/ComputerScience3"><h1>Computer Science 3</h1></a>
+        <p align="right>">Total Discussions: {{CS3count}}</p>
+        Talk about things related to Computer Science III here. 
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Core/DiscreteStructures"><h1>Discrete Structures</h1></a>
+        <p align="right>">Total Discussions: {{DScount}}</p>
+        Talk about things related to Discrete Structures here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Core/OperatingSystems"><h1>Operating Systems</h1></a>
+        <p align="right>">Total Discussions: {{OScount}}</p>
+        Talk about things related to Operating Systems here. 
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Core/ComputerOrganization"><h1>Computer Organization</h1></a>
+        <p align="right>">Total Discussions: {{COcount}}</p>
+        Talk about things related to Compuer Organization here. 
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Core/SoftwareEngineering"><h1>Software Engineering</h1></a>
+        <p align="right>">Total Discussions: {{Secount}}</p>
+        Talk about things related to Software Engineering here. 
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Core/ComputerCommunicationNetworks"><h1>Computer Communication Networks</h1></a>
+        <p align="right>">Total Discussions: {{CCNcount}}</p>
+        Talk about things related to Computer Communication Networks here. 
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Core/IntroductionToDatabaseDesign"><h1>Introduction to Database Design</h1></a>
+        <p align="right>">Total Discussions: {{IDDcount}}</p>
+        Talk about things related to Introduction to Database Design here. 
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Core/StructureOfProgrammingLanguages"><h1>Structure of Programming Languages</h1></a>
+        <p align="right>">Total Discussions: {{SPLcount}}</p>
+        Talk about things related to Structure of Programming Languages here. 
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Core/ComputerScience3"><h1>Design and Analysis of Algorithms</h1></a>
+        <p align="right>">Total Discussions: {{ALGOcount}}</p>
+        Talk about things related to Design and Analysis of Algorithms here. 
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Core/CapstoneProject"><h1>Capstone Project</h1></a>
+        <p align="right>">Total Discussions: {{CPcount}}</p>
+        Talk about things related to Capstone Project here. 
+        <br>
+        <hr>
+    
+    </div>
+    </div>
+
+    <div class="container body-content">
+        {% block content %}{% endblock %}
+        <hr />
+        <footer>
+            <p>&copy; {{ year }} - Kent State Connect</p> <img src="https://i.imgur.com/tXtoBzH.png" alt="KSU" width=179 height=52>
+        </footer>
+    </div>
+</body>
+
+
+<style>
+    .top-bar{
+        color: white;
+        background: black;
+        padding: 1px;
+    }
+    
+    .main_page_links{
+        font-size: 16px;
+        color: rgb(150, 150, 150);
+        background: transparent;
+        padding: transparent;
+        border: transparent;
+    }
+
+    .Forum-Links{
+        background: rgb(255, 255, 255);
+    }
+</style>
