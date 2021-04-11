@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kent State Connect</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"0>
+    <style>
+        .box{
+            border: 4px solid black;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body style="background-color: rgb(231, 231, 231);">
+    <h2 class="top-bar">
+         <p style ="text-align: left;">  
+         <a href="http://localhost:5555/home"><button class="main_page_links">Home</button></a>  
+         <a href="http://localhost:5555/about"><button class="main_page_links">About</button></a>  
+         <a href="http://localhost:5555/contact"><button class="main_page_links">Contact</button></a>  
+         <a href="http://localhost:5555/resources"><button class="main_page_links">Resources</button></a>
+         <a href="http://localhost:8000"><button class="main_page_links">Directory</button></a>
+         </p>    
+    </h2>
+    <p align=center><img src="https://i.imgur.com/p8RQptU.jpg" alt="KSU" width=44% height=44%></p>
+    <div class="card-body container" style="padding: 30px; background: white;">
+        <div class="card-body container">
+        <a href="http://localhost:8000/ClassDiscussions/Electives/ArtificialIntelligence"><h1>Artificial Intelligence</h1></a> 
+        <p align="right>">Total Discussions: {{AIcount}}</p>
+        Talk about the Artificial Intelligence class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/SystemsProgramming"><h1>Systems Programming</h1></a> 
+        <p align="right>">Total Discussions: {{SPcount}}</p>
+        Talk about the Systems Programming class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/BigDataAnalytics"><h1>Big Data Analytics</h1></a> 
+        <p align="right>">Total Discussions: {{BDcount}}</p>
+        Talk about the Big Data Analytics class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/MachineLearningAndDeepLearning"><h1>Machine Learning and Deep Learning</h1></a> 
+        <p align="right>">Total Discussions: {{MLcount}}</p>
+        Talk about the Machine Learning and Deep Learning class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/CPUArchitectures"><h1>CPU Architectures</h1></a> 
+        <p align="right>">Total Discussions: {{CAcount}}</p>
+        Talk about the CPU Architectures class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/DigitalForensics"><h1>Digital Forensics</h1></a> 
+        <p align="right>">Total Discussions: {{DFcount}}</p>
+        Talk about the Digital Forensics class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/IntroductionToCryptology"><h1>Introduction to Cryptology</h1></a> 
+        <p align="right>">Total Discussions: {{ICcount}}</p>
+        Talk about the Introduction to Cryptology class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/IntermediateLogic"><h1>Intermediate Logic</h1></a> 
+        <p align="right>">Total Discussions: {{ILcount}}</p>
+        Talk about the Intermediate Logic class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/InternshipInComputerScience"><h1>Internship in Computer Science</h1></a> 
+        <p align="right>">Total Discussions: {{ICScount}}</p>
+        Talk about the Internship in Computer Science class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/DataMining"><h1>Data Mining</h1></a> 
+        <p align="right>">Total Discussions: {{DMcount}}</p>
+        Talk about the Data Mining class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/GameDevelopmentPracticum"><h1>Game Development Practicum</h1></a> 
+        <p align="right>">Total Discussions: {{GDPcount}}</p>
+        Talk about the Game Develpoment Practicum class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/ComputerGraphics"><h1>Computer Graphics</h1></a> 
+        <p align="right>">Total Discussions: {{CGcount}}</p>
+        Talk about the Computer Graphics class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/InformationSecurity"><h1>Information Security</h1></a> 
+        <p align="right>">Total Discussions: {{IScount}}</p>
+        Talk about the Information Security class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/NaturalLanguageProcessing"><h1>Natural Language Processing</h1></a> 
+        <p align="right>">Total Discussions: {{NLPcount}}</p>
+        Talk about the Natural Language Processing class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/iOSProgramming"><h1>iOS Programming</h1></a> 
+        <p align="right>">Total Discussions: {{IOScount}}</p>
+        Talk about the iOS Programming class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/GameEngineConcepts"><h1>Game Engine Concepts</h1></a> 
+        <p align="right>">Total Discussions: {{GECcount}}</p>
+        Talk about the Game Engine Concepts class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/WebProgrammingI"><h1>Web Programming I</h1></a> 
+        <p align="right>">Total Discussions: {{WPIcount}}</p>
+        Talk about the Web Programming I class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/WebProgrammingII"><h1>Web Programmming II</h1></a> 
+        <p align="right>">Total Discussions: {{WPIIcount}}</p>
+        Talk about the Web Programming II class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/AdvancedDigitalDesign"><h1>Advanced Digital Design</h1></a> 
+        <p align="right>">Total Discussions: {{ADDcount}}</p>
+        Talk about the Advanced Digital Design class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/GraphAndSocialNetworkAnalysis"><h1>Graph and Social Network Analysis</h1></a> 
+        <p align="right>">Total Discussions: {{GSNAcount}}</p>
+        Talk about the Graph and Social Network Analysis class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/InternetEngineering"><h1>Internet Engineering</h1></a> 
+        <p align="right>">Total Discussions: {{IEcount}}</p>
+        Talk about the Internet Engineering class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/ComputerNetworkSecurity"><h1>Computer Network Security</h1></a> 
+        <p align="right>">Total Discussions: {{CNScount}}</p>
+        Talk about the Computer Network Security class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/HumanInterfaceComputing"><h1>Human Interface Computing</h1></a> 
+        <p align="right>">Total Discussions: {{HICcount}}</p>
+        Talk about the Human Interface Computing class here.
+        <br>
+        <hr>
+        <a href="http://localhost:8000/ClassDiscussions/Electives/SoftwareRequirementsEngineering"><h1>Software Requirements Engineering</h1></a> 
+        <p align="right>">Total Discussions: {{SREcount}}</p>
+        Talk about the Software Requirements Engineering class here.
+        <br>
+        <hr>
+    </div>
+    </div>
+
+    <div class="container body-content">
+        {% block content %}{% endblock %}
+        <hr />
+        <footer>
+            <p>&copy; {{ year }} - Kent State Connect</p> <img src="https://i.imgur.com/tXtoBzH.png" alt="KSU" width=179 height=52>
+        </footer>
+    </div>
+</body>
+
+
+<style>
+    .top-bar{
+        color: white;
+        background: black;
+        padding: 1px;
+    }
+    
+    .main_page_links{
+        font-size: 16px;
+        color: rgb(150, 150, 150);
+        background: transparent;
+        padding: transparent;
+        border: transparent;
+    }
+
+    .Forum-Links{
+        background: rgb(255, 255, 255);
+    }
+</style>
