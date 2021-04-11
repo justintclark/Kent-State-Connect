@@ -12,23 +12,12 @@ import uuid , hashlib, os
 from KentStateConnect import app
 
 
-
-#@app.route('/home')
-#def home():
-#	"""Renders the home page."""
-#	return render_template(
-#		'home.html',
-#		title='Home Page',
-#		year=datetime.now().year,
-#	)
-
 @app.route('/contact')
 def contact():
 	"""Renders the contact page."""
 	return render_template(
 		'contact.html',
 		title='Contact Us',
-		year=datetime.now().year,
 		message='Find us at Kent State in the Computer Science department.'
 	)
 
@@ -38,7 +27,6 @@ def about():
 	return render_template(
 		'about.html',
 		title='About Kent State Connect',
-		year=datetime.now().year,
 		message='For students, by students.'
 	)
 
@@ -48,7 +36,6 @@ def resources():
 	return render_template(
 		'resources.html',
 		title='Resources',
-		year=datetime.now().year,
 		message='Below are some additional links to help you connect with Kent State and other students.'
 	)
 
@@ -63,7 +50,6 @@ def tutors():
 	return render_template(
 		'tutors.html',
 		title='Tutors',
-		year=datetime.now().year,
 		message='Due to the ongoing pandemic, tutoring will only be held online through Blackboard Collab between 9am to 9pm EST.'
 	)
 
@@ -183,8 +169,6 @@ def register():
 		hash =	password + app.secret_key
 		hash = hashlib.sha1(hash.encode())
 		hashed_password = hash.hexdigest();
-
-		formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
 		# Checking if account exists 
 		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) 
 		cursor.execute('SELECT * FROM users WHERE username = % s', (username, )) 
@@ -307,7 +291,7 @@ def edit_profile():
 		return render_template('profile-edit.html', account=account, msg=msg)
 	return redirect(url_for('login'))
 
-# http://localhost:5000/pythinlogin/forgotpassword - user can use this page if they have forgotten their password
+# http://localhost:5000/pythonlogin/forgotpassword - user can use this page if they have forgotten their password
 @app.route('/pythonlogin/forgotpassword', methods=['GET', 'POST'])
 def forgotpassword():
 	msg = ''
