@@ -1,26 +1,103 @@
 {% extends "layout.html" %}
 
+
 {% block content %}
+<img src="https://i.imgur.com/p8RQptU.jpg" class="img-responsive" alt="KSU">
 
 <div class=jumbotron>
 
-<h2>{{ title }}</h2>
-<h3>Discord</h3>
+<h1>{{ title }}</h1>
+<h3><strong>Discord</strong></h3>
 <p>The following link will take you to the KSU CS Discord:</p>
 <p><a href="https://discord.gg/7D6ecVBhBR" class="btn btn-primary btn-large">To the Discord &raquo;</a></p>
 
-<h3>Contact Kent State</h3>
-<p>Need help with something?</p>
-<p><a href="https://www.kent.edu/it/techhelp" class="btn btn-warning btn-large">TechHelp &raquo;</a></p>
-<p><a href="https://map.concept3d.com/?id=568#!ct/5500" class="btn btn-warning btn-large">Campus Map &raquo;</a></p>
-<p>Need to talk to contact somebody in the Computer Science department?</p>
-<p><a href="https://www.kent.edu/cs/faculty-staff-directory" class="btn btn-primary btn-large">CS Faculty and Staff Directory &raquo;</a></p>
-<p><a href="https://advising.kent.edu/" class="btn btn-primary btn-large">Schedule an Advising Appointment &raquo;</a></p>
-<p><a href="https://www.kent.edu/cs/faculty-office-hours" class="btn btn-primary btn-large">CS Faculty Office Hours &raquo;</a></p>
+</div>
+<div class="jumbotron">
 
-<h3>Get Involved</h3>
-<p>Learn how to code with Hacksu:</p>
-<p><a href="https://hacksu.cs.kent.edu/" class="btn btn-warning btn-large">Hacksu &raquo;</a></p>
+<h3><strong>Contact Kent State</strong></h3>
+<p><strong>Need help with something?</strong></p>
+<div class="row">
+    <div class="col-md-4">
+        <h4>TechHelp is the on campus technology help offered by Kent State. They can halp install software, troubleshoot issues, and do some hardware fixes.</h4>
+    </div>
+    <div class="col-md-4">
+        <h4>Kent State offers an interactive online map to help you find where you need to go.</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <p><a href="https://www.kent.edu/it/techhelp" class="btn btn-warning btn-large">TechHelp &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <p><a href="https://map.concept3d.com/?id=568#!ct/5500" class="btn btn-warning btn-large">Campus Map &raquo;</a></p>
+    </div>
+</div>
+
+
+<p><strong>Need to talk to contact somebody in the Computer Science department?</strong></p>
+<div class="row">
+    <div class="col-md-4">
+        <h4>The faculty and staff directory for the Computer Science department is the place to go if you need to contact somebody specifically.</h4>
+    </div>
+    <div class="col-md-4">
+        <h4>Through this link you can schedule an appointment with an advisor from any department and check their availability.</h4>
+    </div>
+    <div class="col-md-4">
+        <h4>Computer Science faculty office hours can be found through this link.</h4>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <p><a href="https://www.kent.edu/cs/faculty-staff-directory" class="btn btn-primary btn-large">CS Faculty and Staff Directory &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <p><a href="https://advising.kent.edu/" class="btn btn-primary btn-large">Schedule an Advising Appointment &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <p><a href="https://www.kent.edu/cs/faculty-office-hours" class="btn btn-primary btn-large">CS Faculty Office Hours &raquo;</a></p>
+    </div>
+</div>
+
+</div>
+<div class="jumbotron">
+
+<h3><strong>Get Involved</strong></h3>
+<p><strong>HacKSU</strong></p>
+<h4>HacKSU is a club at Kent State that helps people learn about all aspects of coding. It focuses on learning things that may not be taught at Kent State and allows students to expand their horizons.</h4>
+<p><a href="https://hacksu.cs.kent.edu/" class="btn btn-warning btn-large">HacKSU &raquo;</a></p>
+<p><strong>The Blockchain and Cryptocurrency Center of Excellence</strong></p>
+<h4>The BC2 is focused on developing the skills and talents required to succeed in this new trillion dollar industry - exposing students and faculty to worldwide events, career opportunities, networking opportunities and invited guest lectures from renowned individuals in the field.</h4>
+<p><a href="https://www.kent.edu/csi/blockchain-cryptocurrency-center-excellence" class="btn btn-warning btn-large">The BC2 &raquo;</a></p>
+
+</div>
+<div class="jumbotron">
+
+<h3><strong>Tutoring</strong></h3>
+
+<table class="table table-bordered">
+    <tr style="background-color: #003976; color: gold;"><th>Tutoring Schedule</th><th>Sunday</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th></tr><tbody>
+     <tr style="background-color: ghostwhite;"><td>9:00 AM</td><td>Gabe</td><td>Adam</td><td>Dawson</td><td>Adam</td><td>Dawson</td><td>Gabe</td><td>Adam</td></tr>
+     <tr style="background-color: rgb(129, 178, 224);"><td>10:00 AM</td><td>Gabe</td><td>Adam</td><td>Dawson</td><td>Adam</td><td>Dawson</td><td>Gabe</td><td>Adam</td></tr>
+     <tr style="background-color: ghostwhite;"><td>11:00 AM</td><td>Gabe</td><td>Adam</td><td>Dawson</td><td>Adam</td><td>Dawson</td><td>Gabe</td><td>Adam</td></tr>
+     <tr style="background-color: rgb(129, 178, 224);"><td>12:00 PM</td><td>Josh</td><td>Josh</td><td>Dawson</td><td>JT</td><td>JT</td><td>JT</td><td>Maxwell</td></tr>
+     <tr style="background-color: ghostwhite;"><td>1:00 PM</td><td>Josh</td><td>Josh</td><td>Dawson</td><td>JT</td><td>JT</td><td>JT</td><td>Maxwell</td></tr>
+     <tr style="background-color: rgb(129, 178, 224);"><td>2:00 PM</td><td>Josh</td><td>Josh</td><td>Dawson</td><td>JT</td><td>JT</td><td>JT</td><td>Maxwell</td></tr>
+     <tr style="background-color: ghostwhite;"><td>3:00 PM</td><td>Jon</td><td>Maxwell</td><td>Gabe & Josh</td><td>Maxwell</td><td>Gabe & Josh</td><td>Maxwell</td><td>Gabe</td></tr>
+     <tr style="background-color: rgb(129, 178, 224);"><td>4:00 PM</td><td>Jon</td><td>Maxwell</td><td>Gabe & Josh</td><td>Maxwell</td><td>Gabe & Josh</td><td>Maxwell</td><td>Gabe</td></tr>
+     <tr style="background-color: ghostwhite;"><td>5:00 PM</td><td>Jon</td><td>Maxwell</td><td>Gabe & Josh</td><td>Maxwell</td><td>Gabe & Josh</td><td>Maxwell</td><td>Gabe</td></tr>
+     <tr style="background-color: rgb(129, 178, 224);"><td>6:00 PM</td><td>Maxwell</td><td>Jon</td><td>Adam & Josh</td><td>Jon</td><td>Gabe & Josh</td><td>Dawson</td><td>Jon</td></tr>
+     <tr style="background-color: ghostwhite;"><td>7:00 PM</td><td>Maxwell</td><td>Jon</td><td>Adam</td><td>Jon</td><td>Jon</td><td>Dawson</td><td>Jon</td></tr>
+     <tr style="background-color: rgb(129, 178, 224);"><td>8:00 PM</td><td>Maxwell</td><td>Jon</td><td>Adam</td><td>Jon</td><td>Jon</td><td>Dawson</td><td>Jon</td></tr>
+     <tr style="background-color: ghostwhite;"><td>9:00 PM</td><td>---</td><td>---</td><td>Josh</td><td>---</td><td>Josh</td><td>---</td><td>JT</td></tr>
+     <tr style="background-color: rgb(129, 178, 224);"><td>10:00 PM</td><td>---</td><td>---</td><td>Josh</td><td>---</td><td>Josh</td><td>---</td><td>JT</td></tr>
+     <tr style="background-color: ghostwhite;"><td>11:00 PM</td><td>---</td><td>---</td><td>Josh</td><td>---</td><td>Josh</td><td>---</td><td>JT</td></tr>
+    </tbody></table>
+<p><a href="https://docs.google.com/spreadsheets/d/1zZqp8k1a4e4prX7fxem4y3bxQl0fDeEBbvR99ro04qw/edit#gid=0" class="btn btn-primary btn-large">The Schedule Link &raquo;</a></p>
+
+<p>The tutoring Blackboard Collaborate can be found through the following link:</p>
+<p><a href="https://us.bbcollab.com/guest/16833b10b2214412a3fec63c59873573" class="btn btn-primary btn-large">To Online Tutoring &raquo;</a></p>
+
 </div>
 
 {% endblock %}
