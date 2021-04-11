@@ -291,8 +291,8 @@ def edit_profile():
 		return render_template('profile-edit.html', account=account, msg=msg)
 	return redirect(url_for('login'))
 
-# http://localhost:5000/pythonlogin/forgotpassword - user can use this page if they have forgotten their password
-@app.route('/pythonlogin/forgotpassword', methods=['GET', 'POST'])
+# http://localhost:5000//forgotpassword - user can use this page if they have forgotten their password
+@app.route('/forgotpassword', methods=['GET', 'POST'])
 def forgotpassword():
 	msg = ''
 	if request.method == 'POST' and 'email' in request.form:
