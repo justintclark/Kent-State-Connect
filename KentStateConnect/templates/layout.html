@@ -8,7 +8,7 @@
     <script src="/static/scripts/modernizr-2.6.2.js"></script>
 </head>
 
-<body>
+<body class "loggedin">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -28,7 +28,7 @@
                     <li><a href="{{ url_for('forum') }}">Forum</a></li>
                     <li><a href="{{ url_for('login') }}">Login</a></li>
                     <li><a href="{{ url_for('logout') }}">Logout</a></li>
-          </div> 
+                    <li><a href="{{ url_for('profile') }}">Profile</a></li>
         </div> 
     </body> 
 </html> 
