@@ -308,7 +308,7 @@ def forgotpassword():
 			# Generate unique ID
 			reset_code = uuid.uuid4()
 			# Update the reset column in the accounts table to reflect the generated ID
-			cursor.execute('UPDATE auth_user SET reset = ? WHERE user_email = ?', (reset_code, email,))
+			cursor.execute('UPDATE auth_user SET reset = ? WHERE user_email = ?', (str(reset_code), email,))
 			connection.commit()
 			email_info = Message('Password Reset', sender = app.config['MAIL_USERNAME'], recipients = [email])
 			# Generate reset password link
