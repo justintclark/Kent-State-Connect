@@ -2,14 +2,12 @@
 Routes and views for the flask application.
 """
 
-import datetime
+import datetime , sqlite3
 from flask import Flask, render_template, redirect, url_for, request, session, make_response
-from flask_mysqldb import MySQL
 from flask_mail import Mail, Message
-import MySQLdb.cursors
-import re 
-import uuid , hashlib, os
+import re , uuid , hashlib, os
 from KentStateConnect import app
+
 
 
 @app.route('/contact')
@@ -53,14 +51,10 @@ def tutors():
 		message='Due to the ongoing pandemic, tutoring will only be held online through Blackboard Collab between 9am to 9pm EST.'
 	)
 
-# main config and Initializing MySQl
+# main config and Initializing SQLite Database
+connection = sqlite3.connect('db.sqlite3', check_same_thread=False)
 app.secret_key = '12345'  
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'ksc'
 app.config['threaded']= True
-mysql = MySQL(app) 
 
 # Enter your domain name below
 app.config['DOMAIN'] = 'http://localhost:5555'
@@ -75,6 +69,7 @@ app.config['MAIL_USE_SSL'] = True
 
 # Intialize Mail
 mail = Mail(app)
+
 
 # Enable account activation?
 account_activation_required = True
@@ -112,8 +107,8 @@ def login():
 		hash = hashlib.sha1(hash.encode())
 		password = hash.hexdigest();
 		# Check if account exists using MySQL
-		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) 
-		cursor.execute('SELECT * FROM users WHERE username = % s AND password = % s', (username, password,)) # Commas are needed at the end of each to convert the execute to bytes properly 
+		cursor = connection.cursor() 
+		cursor.execute('SELECT * FROM auth_user WHERE username = ? AND password = ?', (username, password,)) # Commas are needed at the end of each to convert the execute to bytes properly 
 		# Fetch record and return result
 		account = cursor.fetchone() 
 		if account: 
@@ -136,7 +131,7 @@ def login():
 				resp = make_response('Success', 200)
 				resp.set_cookie('rememberme', hash, expires=expire_date)
 				# Update rememberme in accounts table to the cookie hash
-				cursor.execute('UPDATE users SET rememberme = %s WHERE id = %s', (hash, account['user_id'],))
+				cursor.execute('UPDATE auth_user SET rememberme = ? WHERE id = ?', (hash, account['user_id'],))
 				mysql.connection.commit()
 				return resp
 			return "Success"
@@ -152,9 +147,9 @@ def loggedin():
 	if 'loggedin' in session:
 		return True
 	elif 'rememberme' in request.cookies:
-		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+		cursor = connection.cursor()
 		# Check if remembered, cookie has to match the "rememberme" field
-		cursor.execute('SELECT * FROM users WHERE rememberme = %s', (request.cookies['rememberme'],))
+		cursor.execute('SELECT * FROM auth_user WHERE rememberme = ?', (request.cookies['rememberme'],))
 		account = cursor.fetchone()
 		if account:
 			# Update session variables
@@ -183,15 +178,15 @@ def register():
 		password = request.form['password'] 
 		cpassword = request.form['cpassword']
 		KSUID = request.form['email']
-		user_email = KSUID + "@kent.edu" 
-		now = datetime.now()
+		user_email = KSUID + "@kent.edu"
+		#now = datetime.now()
 		# Hash the password
-		hash =	password + app.secret_key
+		hash = password + app.secret_key
 		hash = hashlib.sha1(hash.encode())
 		hashed_password = hash.hexdigest();
 		# Checking if account exists 
-		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) 
-		cursor.execute('SELECT * FROM users WHERE username = % s', (username,)) 
+		cursor = connection.cursor() 
+		cursor.execute('SELECT * FROM auth_user WHERE username = ?', (username,)) 
 		account = cursor.fetchone() 
 		if account: 
 			msg = 'Account already exists!'
@@ -199,14 +194,14 @@ def register():
 			msg = 'Invalid email address!'
 		elif not re.match(r'[A-Za-z0-9]+', username): 
 			msg = 'Username must contain only characters and numbers!'
-		elif not username or not	password or not user_email: 
+		elif not username or not password or not user_email: 
 			msg = 'Registration failed.'
-		elif	password != cpassword:
+		elif password != cpassword:
 			return 'Passwords do not match!'
 		elif account_activation_required: 
 			activation_code = uuid.uuid4() # Generate a random unique id for activation code
-			cursor.execute('INSERT INTO users (username, password, user_email, activation_code) VALUES  (%s, %s, %s, %s)', (username, hashed_password, user_email, activation_code,)) 
-			mysql.connection.commit() 
+			cursor.execute('INSERT INTO auth_user (username, password, user_email, activation_code) VALUES  (?, ?, ?, ?)', (username, hashed_password, user_email, str(activation_code))) 
+			connection.commit() 
 			email_info = Message('Account Activation Required', sender = 'kentstateconnect@gmail.com', recipients = [user_email])
 			activate_link = app.config['DOMAIN'] + url_for('activate', user_email=user_email, code=str(activation_code))
 			# Define and render the activation email template
@@ -217,8 +212,8 @@ def register():
 			msg = 'Please check your email to activate your account!'
 		else:
 			# Account doesnt exists and the form data is valid, now insert new account into users table
-			cursor.execute('INSERT INTO users (username, password, user_email, activation_code) VALUES  (%s, %s, %s, %s)', (username, hashed_password, user_email, activation_code,)) 
-			mysql.connection.commit()
+			cursor.execute('INSERT INTO auth_user (username, password, user_email, activation_code) VALUES  (?, ?, ?, ?)', (username, hashed_password, user_email, str(activation_code))) 
+			connection.commit()
 			msg = 'You have successfully registered!'
 	elif request.method == 'POST': 
 		msg = 'Registration failed. Please fill out the form and try again.'
@@ -228,13 +223,13 @@ def register():
 @app.route('/activate/<string:user_email>/<string:code>', methods=['GET'])
 def activate(user_email, code):
 	# Check if the email and code provided exist in the accounts table
-	cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-	cursor.execute('SELECT * FROM users WHERE user_email = %s AND activation_code = %s', (user_email, code,))
+	cursor = connection.cursor()
+	cursor.execute('SELECT * FROM auth_user WHERE user_email = ? AND activation_code = ?', (user_email, code,))
 	account = cursor.fetchone()
 	if account:
 		# account exists, update the activation code to "activated"
-		cursor.execute('UPDATE users SET activation_code = "activated" WHERE user_email = %s AND activation_code = %s', (user_email, code,))
-		mysql.connection.commit()
+		cursor.execute('UPDATE auth_user SET activation_code = "activated" WHERE user_email = ? AND activation_code = ?', (user_email, code,))
+		connection.commit()
 		# print message, or you could redirect to the login page...
 		msg = "Account successfully activated."
 		return render_template('home.html', msg = msg)
@@ -246,8 +241,8 @@ def profile():
 	# Check if user is loggedin
 	if loggedin():
 		# Need to grab the account info for the user so it can be displayed on the profile page
-		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-		cursor.execute('SELECT * FROM users WHERE user_id = %s', (session['user_id'],))
+		cursor = connection.cursor()
+		cursor.execute('SELECT * FROM auth_user WHERE user_id = ?', (session['user_id'],))
 		account = cursor.fetchone()
 		# Show the profile page with account info
 		return render_template('profile.html', account=account)
@@ -260,7 +255,7 @@ def edit_profile():
 	# Check if user is loggedin
 	if loggedin():
 		# We need all the account info for the user so we can display it on the profile page
-		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+		cursor = connection.cursor()
 		# Output message
 		msg = ''
 		# Check if "username", "password" and "email" POST requests exist (user submitted form)
@@ -270,7 +265,7 @@ def edit_profile():
 			password = request.form['password']
 			user_email = request.form['email']
 			# Retrieve account by the username
-			cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,))
+			cursor.execute('SELECT * FROM auth_user WHERE username = ?', (username,))
 			account = cursor.fetchone()
 			# validation check
 			if not re.match(r'[^@]+@[^@]+\.[^@]+', user_email):
@@ -282,7 +277,7 @@ def edit_profile():
 			elif session['username'] != username and account:
 				msg = 'Username already exists!'
 			else:
-				cursor.execute('SELECT * FROM users WHERE user_id = %s', (session['user_id'],))
+				cursor.execute('SELECT * FROM auth_user WHERE user_id = ?', (session['user_id'],))
 				account = cursor.fetchone()
 				current_password = account['password']
 				if password:
@@ -291,10 +286,10 @@ def edit_profile():
 					hash = hashlib.sha1(hash.encode())
 					current_password = hash.hexdigest();
 				# Update account with the new details
-				cursor.execute('UPDATE users SET username = %s, password = %s, user_email = %s WHERE id = %s', (username, current_password, user_email, session['user_id'],))
-				mysql.connection.commit()
+				cursor.execute('UPDATE auth_user SET username = ?, password = ?, user_email = ? WHERE id = ?', (username, current_password, user_email, session['user_id'],))
+				connection.commit()
 				msg = 'Updated!'
-		cursor.execute('SELECT * FROM users WHERE id = %s', (session['user_id'],))
+		cursor.execute('SELECT * FROM auth_user WHERE id = ?', (session['user_id'],))
 		account = cursor.fetchone()
 		# Show the profile page with account info
 		return render_template('profile-edit.html', account=account, msg=msg)
@@ -306,15 +301,15 @@ def forgotpassword():
 	msg = ''
 	if request.method == 'POST' and 'email' in request.form:
 		email = request.form['email']
-		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-		cursor.execute('SELECT * FROM users WHERE user_email = %s', (email,))
+		cursor = connection.cursor()
+		cursor.execute('SELECT * FROM auth_user WHERE user_email = ?', (email,))
 		account = cursor.fetchone()
 		if account:
 			# Generate unique ID
 			reset_code = uuid.uuid4()
 			# Update the reset column in the accounts table to reflect the generated ID
-			cursor.execute('UPDATE users SET reset = %s WHERE user_email = %s', (reset_code, email,))
-			mysql.connection.commit()
+			cursor.execute('UPDATE auth_user SET reset = ? WHERE user_email = ?', (str(reset_code), email,))
+			connection.commit()
 			email_info = Message('Password Reset', sender = app.config['MAIL_USERNAME'], recipients = [email])
 			# Generate reset password link
 			reset_link = app.config['DOMAIN'] + url_for('resetpassword', email = email, code = str(reset_code))
@@ -331,9 +326,9 @@ def forgotpassword():
 @app.route('/resetpassword/<string:email>/<string:code>', methods=['GET', 'POST'])
 def resetpassword(email, code):
 	msg = ''
-	cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+	cursor = connection.cursor()
 	# Retrieve the account with the email and reset code provided from the GET request
-	cursor.execute('SELECT * FROM users WHERE user_email = %s AND reset = %s', (email, code,))
+	cursor.execute('SELECT * FROM auth_user WHERE user_email = ? AND reset = ?', (email, code,))
 	account = cursor.fetchone()
 	# If account exists
 	if account:
@@ -348,8 +343,8 @@ def resetpassword(email, code):
 				hash = hashlib.sha1(hash.encode())
 				npassword = hash.hexdigest();
 				# Update the user's password
-				cursor.execute('UPDATE users SET password = %s, reset = "" WHERE user_email = %s', (npassword, email,))
-				mysql.connection.commit()
+				cursor.execute('UPDATE auth_user SET password = ?, reset = "" WHERE user_email = ?', (npassword, email,))
+				connection.commit()
 				msg = 'Your password has been reset, you can now <a href="' + url_for('login') + '">login</a>!'
 			else:
 				msg = 'Passwords must match and must not be empty!'
