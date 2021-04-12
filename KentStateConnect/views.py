@@ -113,7 +113,7 @@ def login():
 		password = hash.hexdigest();
 		# Check if account exists using MySQL
 		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) 
-		cursor.execute('SELECT * FROM users WHERE username = % s AND password = % s', (username, password,)) 
+		cursor.execute('SELECT * FROM users WHERE username = % s AND password = % s', (username, password,)) # Commas are needed at the end of each to convert the execute to bytes properly 
 		# Fetch record and return result
 		account = cursor.fetchone() 
 		if account: 
@@ -162,7 +162,7 @@ def loggedin():
 			session['user_id'] = account['user_id']
 			session['username'] = account['username']
 			return True
-	# Account not logged in return false
+	# Account not logged in returns false
 	return False
 
 @app.route('/logout') 
