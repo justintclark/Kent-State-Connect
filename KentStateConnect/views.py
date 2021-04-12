@@ -2,15 +2,12 @@
 Routes and views for the flask application.
 """
 
-import datetime
+import datetime , sqlite3
 from flask import Flask, render_template, redirect, url_for, request, session, make_response
-#from flask_mysqldb import MySQL
 from flask_mail import Mail, Message
-#import MySQLdb.cursors
-import re 
-import uuid , hashlib, os
+import re , uuid , hashlib, os
 from KentStateConnect import app
-import sqlite3
+
 
 
 @app.route('/contact')
@@ -54,16 +51,10 @@ def tutors():
 		message='Due to the ongoing pandemic, tutoring will only be held online through Blackboard Collab between 9am to 9pm EST.'
 	)
 
-# main config and Initializing MySQl
+# main config and Initializing SQLite Database
 connection = sqlite3.connect('db.sqlite3', check_same_thread=False)
-
 app.secret_key = '12345'  
-#app.config['MYSQL_HOST'] = 'localhost'
-#app.config['MYSQL_USER'] = 'root'
-#app.config['MYSQL_PASSWORD'] = ''
-#app.config['MYSQL_DB'] = 'ksc'
 app.config['threaded']= True
-#mysql = MySQL(app) 
 
 # Enter your domain name below
 app.config['DOMAIN'] = 'http://localhost:5555'
@@ -78,6 +69,7 @@ app.config['MAIL_USE_SSL'] = True
 
 # Intialize Mail
 mail = Mail(app)
+
 
 # Enable account activation?
 account_activation_required = True
@@ -208,7 +200,7 @@ def register():
 			return 'Passwords do not match!'
 		elif account_activation_required: 
 			activation_code = uuid.uuid4() # Generate a random unique id for activation code
-			cursor.execute('INSERT INTO auth_user (username, password, user_email, activation_code) VALUES  (?, ?, ?, ?)', (username, hashed_password, user_email, activation_code,)) 
+			cursor.execute('INSERT INTO auth_user (username, password, user_email, activation_code) VALUES  (?, ?, ?, ?)', (username, hashed_password, user_email, str(activation_code))) 
 			connection.commit() 
 			email_info = Message('Account Activation Required', sender = 'kentstateconnect@gmail.com', recipients = [user_email])
 			activate_link = app.config['DOMAIN'] + url_for('activate', user_email=user_email, code=str(activation_code))
@@ -220,7 +212,7 @@ def register():
 			msg = 'Please check your email to activate your account!'
 		else:
 			# Account doesnt exists and the form data is valid, now insert new account into users table
-			cursor.execute('INSERT INTO auth_user (username, password, user_email, activation_code) VALUES  (?, ?, ?, ?)', (username, hashed_password, user_email, activation_code,)) 
+			cursor.execute('INSERT INTO auth_user (username, password, user_email, activation_code) VALUES  (?, ?, ?, ?)', (username, hashed_password, user_email, str(activation_code))) 
 			connection.commit()
 			msg = 'You have successfully registered!'
 	elif request.method == 'POST': 
