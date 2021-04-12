@@ -13,15 +13,22 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='categories',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('category_id', models.CharField(default='General', max_length=200)),
+            ]
+        ),
+        migrations.CreateModel(
             name='forum',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(default='anonymous', max_length=200)),
                 ('email', models.CharField(max_length=200, null=True)),
-                ('topic', models.CharField(max_length=300)),
+                ('title', models.CharField(max_length=300)),
                 ('description', models.CharField(blank=True, max_length=1000)),
-                #('link', models.CharField(max_length=100, null=True)),
                 ('date_created', models.DateTimeField(auto_now_add=True, null=True)),
+                ('category', models.ForeignKey(blank=True, on_delete=django.db.models.deletion.CASCADE, to='Discussion_forum.category_id'))
             ],
         ),
         migrations.CreateModel(
