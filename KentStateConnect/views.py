@@ -39,8 +39,10 @@ def resources():
 
 @app.route('/forum')
 def forum():
-	"""Renders the Forum page."""
-	return redirect('http://localhost:8000')
+	if loggedin():
+		"""Renders the Forum page."""
+		return redirect('http://localhost:8000')
+	return render_template('login.html')
 
 @app.route('/tutors')
 def tutors():
@@ -86,41 +88,38 @@ def home():
 		# User is loggedin show them the home page
 		return render_template('home.html', username=session['username'])
 	# User is not loggedin redirect to login page
-	return render_template('home.html')
+	return render_template('login.html')
 
-@app.route('/') 
+
 @app.route('/login', methods =['GET', 'POST']) 
 def login(): 
 	# Redirect user to home page if logged-in
 	if loggedin():
 		return redirect(url_for('home'))
 	# Output message if something goes wrong...
-	msg = '' 
+	msg = ' ' 
 	# Checks if "username" and "password" POST requests exist (user submitted form)
-	if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'token' in request.form: 
+	if request.method == 'POST' and 'username' in request.form and 'password' in request.form: 
 		# Create variables for ease of use
 		username = request.form['username'] 
 		password = request.form['password'] 
-		token = request.form['token']
 		# Retrieving hashed password
 		hash =	password + app.secret_key
 		hash = hashlib.sha1(hash.encode())
 		password = hash.hexdigest();
 		# Check if account exists using MySQL
 		cursor = connection.cursor() 
-		cursor.execute('SELECT * FROM auth_user WHERE username = ? AND password = ?', (username, password,)) # Commas are needed at the end of each to convert the execute to bytes properly 
+		cursor.execute('SELECT * FROM auth_user WHERE username = ? AND password = ?', (username, password))
 		# Fetch record and return result
 		account = cursor.fetchone() 
 		if account: 
 			# If account exists in users table in the database
-			if account_activation_required and account['activation_code'] != 'activated' and account['activation_code'] != '':
+			if account_activation_required and account[8] != 'activated' and account[8] != '':
 				return 'Please activate your account to login!'
-			if csrf_protection and str(token) != str(session['token']):
-				return 'Invalid token!'
 			# Create session data, we can access this data in other routes
 			session['loggedin'] = True
-			session['user_id'] = account['user_id'] 
-			session['username'] = account['username'] 
+			session['user_id'] = account[0] 
+			session['username'] = account[2] 
 			if 'rememberme' in request.form:
 				# Create hash to store as cookie
 				hash = request.form['password'] + app.secret_key
@@ -128,19 +127,16 @@ def login():
 				hash = hash.hexdigest();
 				# The cookie expires in 30 days
 				expire_date = datetime.datetime.now() + datetime.timedelta(days=30)
-				resp = make_response('Success', 200)
+				resp = make_response('Success.', 200)
 				resp.set_cookie('rememberme', hash, expires=expire_date)
 				# Update rememberme in accounts table to the cookie hash
-				cursor.execute('UPDATE auth_user SET rememberme = ? WHERE id = ?', (hash, account['user_id'],))
-				mysql.connection.commit()
-				return resp
-			return "Success"
+				cursor.execute('UPDATE auth_user SET rememberme = ? WHERE user_id = ?', (hash, account[0],))
+				connection.commit()
+				return redirect(url_for('home'))
+			return 'Success'
 		else: 
 			msg = 'Incorrect username / password!'
-   # Generate random token that will prevent CSRF attacks
-	token = uuid.uuid4()
-	session['token'] = token 
-	return render_template('login.html', msg = msg , token=token) 
+	return render_template('login.html', msg = msg) 
 
 # Check if logged in, update session if cookie for "remember me" exists 
 def loggedin():
@@ -154,8 +150,8 @@ def loggedin():
 		if account:
 			# Update session variables
 			session['loggedin'] = True
-			session['user_id'] = account['user_id']
-			session['username'] = account['username']
+			session['user_id'] = account[0]
+			session['username'] = account[2]
 			return True
 	# Account not logged in returns false
 	return False
@@ -279,17 +275,17 @@ def edit_profile():
 			else:
 				cursor.execute('SELECT * FROM auth_user WHERE user_id = ?', (session['user_id'],))
 				account = cursor.fetchone()
-				current_password = account['password']
+				current_password = account[1]
 				if password:
 					# Hash the password
 					hash = password + app.secret_key
 					hash = hashlib.sha1(hash.encode())
 					current_password = hash.hexdigest();
 				# Update account with the new details
-				cursor.execute('UPDATE auth_user SET username = ?, password = ?, user_email = ? WHERE id = ?', (username, current_password, user_email, session['user_id'],))
+				cursor.execute('UPDATE auth_user SET username = ?, password = ?, user_email = ? WHERE user_id = ?', (username, current_password, user_email, session['user_id'],))
 				connection.commit()
 				msg = 'Updated!'
-		cursor.execute('SELECT * FROM auth_user WHERE id = ?', (session['user_id'],))
+		cursor.execute('SELECT * FROM auth_user WHERE user_id = ?', (session['user_id'],))
 		account = cursor.fetchone()
 		# Show the profile page with account info
 		return render_template('profile-edit.html', account=account, msg=msg)
