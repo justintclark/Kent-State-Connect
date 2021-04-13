@@ -21,9 +21,12 @@
          <a href="http://localhost:5555/about"><button class="main_page_links">About</button></a>  
          <a href="http://localhost:5555/contact"><button class="main_page_links">Contact</button></a>  
          <a href="http://localhost:5555/resources"><button class="main_page_links">Resources</button></a>
+         {% if user.is_authenticated %}{{ user.username }}</p>
+         {% else %}  <a href="http://localhost:5555/login"><button class="main_page_links">Log in</button></a>  {% endif %}    
          </p>    
     </h2>
     <p align=center><img src="https://i.imgur.com/p8RQptU.jpg" alt="KSU" width=44% height=44%></p>
+
     <div class="card-body container" style="padding: 30px; background: white;">
         <div class="card-body container">
         <a href="http://localhost:8000/GeneralDiscussions/"><h1>General Discussions</h1></a> 

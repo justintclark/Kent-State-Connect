@@ -8,12 +8,14 @@ from .forms import *
 
 def home(request):
     forums=forum.objects.all()
+    users=user.objects.all()
     generalcount=forum.objects.filter(category=1).count()
     roomcount=forum.objects.filter(category=50).count()
     tutoringcount=forum.objects.filter(category=3).count()
     codingcount=forum.objects.filter(category=41).count()
     interncount=forum.objects.filter(category=49).count()
     context={'forums':forums,
+            'users':users,
             'generalcount':generalcount,
             'roomcount':roomcount,
             'codingcount':codingcount,
@@ -149,24 +151,28 @@ def Electives(request):
     return render(request,'electives.html', context)
 
 def addInForum(request):
-    form = CreateInForum()
-    if request.method == 'POST':
-        form = CreateInForum(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
-    context ={'form':form}
-    return render(request,'addInForum.html',context)
+    if request.user.is_authenticated:
+        form = CreateInForum()
+        if request.method == 'POST':
+            form = CreateInForum(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('/')
+        context ={'form':form}
+        return render(request,'addInForum.html',context)
+    else: return render(request, 'NotLoggedIn.html')
 
 def addInDiscussion(request):
-    form = CreateInDiscussion()
-    if request.method == 'POST':
-        form = CreateInDiscussion(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
-    context ={'form':form}
-    return render(request,'addInDiscussion.html',context)
+    if request.user.is_authenticated:
+        form = CreateInDiscussion()
+        if request.method == 'POST':
+            form = CreateInDiscussion(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('/')
+        context ={'form':form}
+        return render(request,'addInDiscussion.html',context)
+    else: return render(request, 'NotLoggedIn.html')
 
 def GeneralDiscussions(request):
     forums=forum.objects.filter(category="1").order_by('-id')

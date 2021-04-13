@@ -21,7 +21,11 @@
             <a href="http://localhost:5555/about"><button class="main_page_links">About</button></a>  
             <a href="http://localhost:5555/contact"><button class="main_page_links">Contact</button></a>  
             <a href="http://localhost:5555/resources"><button class="main_page_links">Resources</button></a>
-            <a href="http://localhost:8000"><button class="main_page_links">Directory</button></a> </p>    </h2>
+            <a href="http://localhost:8000"><button class="main_page_links">Directory</button></a> 
+            {% if user.is_authenticated %}{{ user.username }}
+            {% else %}  <a href="http://localhost:5555/login"><button class="main_page_links">Log in</button></a></p>  {% endif %} 
+        </h2>
+            
 
             <div style="padding-left:71vw;">
             <form method="POST" action="{% url 'addInForum' %}">
@@ -52,7 +56,7 @@
                             {% if objs.forum == forum %}
                             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
                             <form method="POST" action="http://localhost:8000/deletereply/{{objs.id}}" >{% csrf_token %}<p align="right"><button class="btn btn-default"><span class="material-icons">delete</span></button></p></form>
-                               <b>{{objs.name}}</b>: {{objs.id}}<br>
+                               <b>{{objs.name}}</b>:<br>
                                {{objs.discuss}}
                                <br><br><br>
                             {% endif %}
