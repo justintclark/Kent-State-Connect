@@ -35,6 +35,7 @@ def CodingHelp(request):
     Pythoncount=forum.objects.filter(category=46).count()
     Swiftcount=forum.objects.filter(category=47).count()
     FEcount=forum.objects.filter(category=48).count()
+    OLcount=forum.objects.filter(category=58).count()
     context={'forums':forums,
             'Ccount':Ccount,
             'CSharpcount':CSharpcount,
@@ -42,7 +43,8 @@ def CodingHelp(request):
             'JScount':JScount,
             'Pythoncount':Pythoncount,
             'Swiftcount':Swiftcount,
-            'FEcount':FEcount,}
+            'FEcount':FEcount,
+            'OLcount':OLcount}
     return render(request, "CodingHelp.html", context)
 
 def Careers(request):
@@ -54,6 +56,7 @@ def Careers(request):
     datacount=forum.objects.filter(category=55).count()
     gamecount=forum.objects.filter(category=56).count()
     infocount=forum.objects.filter(category=57).count()
+    OCcount=forum.objects.filter(category=59).count()
     context={'forums':forums,
             'appcount':appcount,
             'webcount':webcount,
@@ -61,7 +64,8 @@ def Careers(request):
             'ArtIcount':ArtIcount,
             'datacount':datacount,
             'gamecount':gamecount,
-            'infocount':infocount}
+            'infocount':infocount,
+            'OCcount':OCcount,}
     return render(request, "Careers.html", context)
 
 def Core(request):
@@ -726,6 +730,18 @@ def FrontEnd(request):
               'discussions':discussions}
     return render(request, 'Forums.html', context)
 
+def OtherLanguages(request):
+    forums=forum.objects.filter(category="58").order_by('-id')
+    count=forums.count()
+    discussions=[]
+    for i in forums:
+        discussions.append(i.discussion_set.all())
+
+    context={'forums':forums,
+              'count':count,
+              'discussions':discussions}
+    return render(request, 'Forums.html', context)
+
 def Internships(request):
     forums=forum.objects.filter(category="49").order_by('-id')
     count=forums.count()
@@ -835,6 +851,18 @@ def GameDevelopment(request):
 
 def InformationTechnology(request):
     forums=forum.objects.filter(category="57").order_by('-id')
+    count=forums.count()
+    discussions=[]
+    for i in forums:
+        discussions.append(i.discussion_set.all())
+
+    context={'forums':forums,
+              'count':count,
+              'discussions':discussions}
+    return render(request, 'Forums.html', context)
+
+def OtherCareers(request):
+    forums=forum.objects.filter(category="59").order_by('-id')
     count=forums.count()
     discussions=[]
     for i in forums:
