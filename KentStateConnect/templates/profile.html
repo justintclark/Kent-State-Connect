@@ -5,8 +5,11 @@
 {% block content %}
 <h2>Profile Page</h2>
 <div>
-    <p>Your account details are below:</p>
     <table>
+        <tr>
+            <td>Name:</td>
+            <td>{{ account[3] }}  {{ account[7] }}</td>
+        </tr>
         <tr>
             <td>Username:</td>
             <td>{{ account[2] }}</td>
@@ -16,7 +19,7 @@
             <td>{{ account[4] }}</td>
         </tr>
         <tr>
-            <td>Account Created on:</td>
+            <td>Account Created on: </td>
             <td>{{ account[6] }}</td>
         </tr>
     </table>
