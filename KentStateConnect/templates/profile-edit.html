@@ -7,16 +7,16 @@
 <div>
     <div>
         <form action="{{ url_for('edit_profile') }}" method="post">
-            <label for="first_name">First Name </label>
-            <input type="first_name" value="" name="first_name" id="first_name" placeholder="Optional"><br />
-            <label for="last_name">Last Name </label>
-            <input type="last_name" value="" name="last_name" id="last_name" placeholder="Optional"><br />
-            <label for="username">Username</label>
-            <input type="text" value="{{ account['username'] }}" name="username" id="username" placeholder="Username"><br />
-            <label for="password">New Password </label>
-            <input type="password" value="" name="password" id="password" placeholder="New Password"><br />
-            <label for="email">Email</label>
-            <input type="email" value="{{ account['email'] }}" name="email" id="email" placeholder="Email"><br>
+            <label for="first_name">First Name </label><br />
+            <input type="first_name" value="" name="first_name" id="first_name" placeholder="Optional"><br /><br />
+            <label for="last_name">Last Name </label><br />
+            <input type="last_name" value="" name="last_name" id="last_name" placeholder="Optional"><br /><br />
+            <label for="username">Username</label><br />
+            <input type="text" value="{{ account['username'] }}" name="username" id="username" placeholder="Username"><br /><br />
+            <label for="password">New Password </label><br />
+            <input type="password" value="" name="password" id="password" placeholder="New Password"><br /><br />
+            <label for="email">Email</label><br />
+            <input type="email" value="{{ account['email'] }}" name="email" id="email" placeholder="Email"><br><br /><br />
             <input type="submit" value="Save">
         </form>
         <p>{{ msg }}</p>
