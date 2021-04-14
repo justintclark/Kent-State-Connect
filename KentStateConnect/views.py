@@ -222,7 +222,7 @@ def activate(user_email, code):
 		connection.commit()
 		# print message, or you could redirect to the login page...
 		msg = "Account successfully activated."
-		return render_template('home.html', msg = msg)
+		return render_template('login.html', msg = msg)
 	return 'Account doesn\'t exist with that email or incorrect activation code!'
 
 # This will be the profile page, only accessible for loggedin users
@@ -244,7 +244,6 @@ def profile():
 def edit_profile():
 	# Check if user is loggedin
 	if loggedin():
-		# We need all the account info for the user so we can display it on the profile page
 		cursor = connection.cursor()
 		# Output message
 		msg = ''
@@ -286,6 +285,24 @@ def edit_profile():
 		# Show the profile page with account info
 		return render_template('profile-edit.html', account=account, msg=msg)
 	return redirect(url_for('login'))
+
+# User can delete their account
+@app.route('/delete', methods=['GET', 'POST'])
+def delete(): 
+	# Grab the currently logging in users account
+	cursor = connection.cursor()
+	user_to_delete = session['user_id']
+	cursor.execute('SELECT * FROM auth_user WHERE user_id = ?', (user_to_delete,))
+	account = cursor.fetchone()
+	try:
+		# Remove user from database
+		cursor.execute('DELETE from auth_user where user_id = ?', (user_to_delete,))
+		connection.commit()
+		# Log user out and remove cookies and redirect them to the login page
+		logout()
+		return redirect(url_for('login'))
+	except:
+		return "There was a problem deleting the account"
 
 # http://localhost:5000//forgotpassword - user can use this page if they have forgotten their password
 @app.route('/forgotpassword', methods=['GET', 'POST'])
