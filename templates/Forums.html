@@ -35,8 +35,10 @@
             {%for forum in forums %}
 
                 <div class="card box container" style="padding: 10px;">
+                    
                     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-                    <form method="POST" action="http://localhost:8000/deleteforum/{{forum.id}}" >{% csrf_token %}<p align="right"><button class="btn btn-default"><span class="material-icons">delete</span></button></p></form>
+                    {% if request.user.is_staff %} <form method="POST" action="http://localhost:8000/deleteforum/{{forum.id}}" >{% csrf_token %}<p align="right"><button class="btn btn-default"><span class="material-icons">delete</span></button></p></form> {% endif %}
+
                     <h5>
                         <h1>{{forum.title}}</h1>
                         <div class="card-body container">
@@ -53,8 +55,10 @@
                             {%for discuss in discussions%}
                             {%for objs in discuss%}  
                             {% if objs.forum == forum %}
+                            {% if request.user.is_staff%}
                             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
                             <form method="POST" action="http://localhost:8000/deletereply/{{objs.id}}" >{% csrf_token %}<p align="right"><button class="btn btn-default"><span class="material-icons">delete</span></button></p></form>
+                            {% endif %}
                                <b>{{objs.name}}</b>:<br>
                                {{objs.discuss}}
                                <br><br><br>
