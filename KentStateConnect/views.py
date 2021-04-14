@@ -128,7 +128,7 @@ def login():
 				cursor.execute('UPDATE auth_user SET rememberme = ? WHERE user_id = ?', (hash, account[0],))
 				connection.commit()
 				return resp
-			return 'Success'
+			return redirect(url_for('home'))
 		else: 
 			msg = 'Incorrect username / password!'
 	return render_template('login.html', msg = msg) 
@@ -249,11 +249,13 @@ def edit_profile():
 		# Output message
 		msg = ''
 		# Check if "username", "password" and "email" POST requests exist (user submitted form)
-		if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form:
+		if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form and 'first_name' in request.form and 'last_name' in request.form:
 			# Create variables for easy access
 			username = request.form['username']
 			password = request.form['password']
 			user_email = request.form['email']
+			first_name = request.form['first_name']
+			last_name = request.form['last_name']
 			# Retrieve account by the username
 			cursor.execute('SELECT * FROM auth_user WHERE username = ?', (username,))
 			account = cursor.fetchone()
@@ -276,7 +278,7 @@ def edit_profile():
 					hash = hashlib.sha1(hash.encode())
 					current_password = hash.hexdigest();
 				# Update account with the new details
-				cursor.execute('UPDATE auth_user SET username = ?, password = ?, user_email = ? WHERE user_id = ?', (username, current_password, user_email, session['user_id'],))
+				cursor.execute('UPDATE auth_user SET username = ?, password = ?, user_email = ? , first_name = ? , last_name = ? WHERE user_id = ?', (username, current_password, user_email, first_name, last_name, session['user_id'],))
 				connection.commit()
 				msg = 'Updated!'
 		cursor.execute('SELECT * FROM auth_user WHERE user_id = ?', (session['user_id'],))
