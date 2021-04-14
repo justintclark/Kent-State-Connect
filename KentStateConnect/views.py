@@ -117,7 +117,7 @@ def login():
 			session['username'] = account[2] 
 			if 'rememberme' in request.form:
 				# Create hash to store as cookie
-				hash = request.form['password'] + app.secret_key
+				hash = request.form['username'] + request.form['password'] + app.secret_key 
 				hash = hashlib.sha1(hash.encode())
 				hash = hash.hexdigest();
 				# The cookie expires in 30 days

@@ -3,7 +3,7 @@ from django.db import models
 
 #user
 class user(models.Model):
-    username = models.CharField(max_length=300)
+    username = models.CharField(max_length=191)
 
     def __str__(self):
         return self.username

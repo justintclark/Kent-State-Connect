@@ -15,8 +15,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='user',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('username', models.CharField(max_length=200)),
+                ('user_id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='USER_ID')),
+                ('username', models.CharField(max_length=191)),
             ]
         ),
 
@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
             name='forum',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(default='anonymous', max_length=200)),
+                ('name', models.CharField(max_length=200)),
                 ('title', models.CharField(max_length=300)),
                 ('description', models.CharField(blank=True, max_length=1000)),
                 ('date_created', models.DateTimeField(auto_now_add=True, null=True)),
@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
             name='Discussion',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(default='anonymous', max_length=200)),
+                ('name', models.CharField(max_length=200)),
                 ('discuss', models.CharField(max_length=1000)),
                 ('forum', models.ForeignKey(blank=True, on_delete=django.db.models.deletion.CASCADE, to='Discussion_forum.forum')),
             ],
