@@ -1,6 +1,13 @@
 from django.forms import TextInput, Textarea
 from django.db import models 
 
+#user
+class user(models.Model):
+    username = models.CharField(max_length=191)
+
+    def __str__(self):
+        return self.username
+
 #categories
 class Category(models.Model):
     Cat_name=models.CharField(max_length=200)
@@ -12,7 +19,6 @@ class forum(models.Model):
     category = models.ForeignKey(Category,blank=False,on_delete=models.CASCADE)
     title= models.CharField(max_length=300)
     name=models.CharField(max_length=200)
-    email=models.CharField(max_length=200,null=False)
     description=models.CharField(max_length=10000,blank=False)
     date_created=models.DateTimeField(auto_now_add=True,null=True)
     

@@ -16,9 +16,14 @@
                 <form action="{{ url_for('login') }}" method="post"> 
                   <div class="msg">{{ msg }}</div> 
                     <input id="username" name="username" type="text" placeholder="Username" class="textbox"/></br></br> 
-                    <input id="password" name="password" type="password" placeholder="Password" class="textbox"/></br></br></br> 
-                    <input type="submit" class="btn" value="Sign In"></br></br> 
-                </form> 
+                    <input id="password" name="password" type="password" placeholder="Password" class="textbox"/></br></br>
+                    <label id="rememberme">
+                      <input type="checkbox" name="rememberme">Remember me
+                    </label></br></br>
+                  </label>
+                    <input type="submit" class="btn" value="Sign In"></br>
+                </form>
+                <a class="bottom" href="{{url_for('forgotpassword')}}"> Forgot Password?</a></p>
             </h2> 
             <p class="bottom">Don't have an account?  <a class="bottom" href="{{url_for('register')}}"> Sign Up here</a></p> 
           </div> 

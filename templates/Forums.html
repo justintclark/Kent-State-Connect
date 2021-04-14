@@ -21,7 +21,10 @@
             <a href="http://localhost:5555/about"><button class="main_page_links">About</button></a>  
             <a href="http://localhost:5555/contact"><button class="main_page_links">Contact</button></a>  
             <a href="http://localhost:5555/resources"><button class="main_page_links">Resources</button></a>
-            <a href="http://localhost:8000"><button class="main_page_links">Directory</button></a> </p>    </h2>
+            <a href="http://localhost:8000"><button class="main_page_links">Directory</button></a> 
+            <a href="http://localhost:5555/profile"><button class="main_page_links">Profile</button></a></p>
+        </h2>
+            
 
             <div style="padding-left:71vw;">
             <form method="POST" action="{% url 'addInForum' %}">
@@ -37,7 +40,7 @@
                     <h5>
                         <h1>{{forum.title}}</h1>
                         <div class="card-body container">
-                            <p> By: {{forum.name}}</p>{{forum.date_created}}<hr>
+                            <p> By: {{ forum.name }}</p>{{forum.date_created}}<hr>
                             <p>{{forum.description}}</p>
                             <br>
                             <br>
@@ -52,7 +55,7 @@
                             {% if objs.forum == forum %}
                             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
                             <form method="POST" action="http://localhost:8000/deletereply/{{objs.id}}" >{% csrf_token %}<p align="right"><button class="btn btn-default"><span class="material-icons">delete</span></button></p></form>
-                               <b>{{objs.name}}</b>: {{objs.id}}<br>
+                               <b>{{objs.name}}</b>:<br>
                                {{objs.discuss}}
                                <br><br><br>
                             {% endif %}
