@@ -132,7 +132,7 @@ def login():
 				# Update rememberme in accounts table to the cookie hash
 				cursor.execute('UPDATE auth_user SET rememberme = ? WHERE user_id = ?', (hash, account[0],))
 				connection.commit()
-				return redirect(url_for('home'))
+				return resp
 			return 'Success'
 		else: 
 			msg = 'Incorrect username / password!'

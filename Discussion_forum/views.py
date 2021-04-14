@@ -8,14 +8,15 @@ from .forms import *
 
 def home(request):
     forums=forum.objects.all()
-    users=user.objects.all()
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     generalcount=forum.objects.filter(category=1).count()
     roomcount=forum.objects.filter(category=50).count()
     tutoringcount=forum.objects.filter(category=3).count()
     codingcount=forum.objects.filter(category=41).count()
     interncount=forum.objects.filter(category=49).count()
-    context={'forums':forums,
-            'users':users,
+    context={
+            'forums':forums,
             'generalcount':generalcount,
             'roomcount':roomcount,
             'codingcount':codingcount,
@@ -24,9 +25,13 @@ def home(request):
     return render(request,'home.html', context)
 
 def ClassDiscussions(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     return render(request, "ClassDiscussions.html")
     
 def CodingHelp(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.all()
     Ccount=forum.objects.filter(category=42).count()
     CSharpcount=forum.objects.filter(category=43).count()
@@ -48,6 +53,8 @@ def CodingHelp(request):
     return render(request, "CodingHelp.html", context)
 
 def Careers(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.all()
     appcount=forum.objects.filter(category=51).count()
     webcount=forum.objects.filter(category=52).count()
@@ -69,6 +76,8 @@ def Careers(request):
     return render(request, "Careers.html", context)
 
 def Core(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.all()
     ICScount=forum.objects.filter(category=2).count()
     CS1Acount=forum.objects.filter(category=4).count()
@@ -102,6 +111,8 @@ def Core(request):
     return render(request,'coreclass.html', context)
 
 def Electives(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.all()
     AIcount=forum.objects.filter(category=17).count()
     SPcount=forum.objects.filter(category=18).count()
@@ -155,7 +166,7 @@ def Electives(request):
     return render(request,'electives.html', context)
 
 def addInForum(request):
-    if request.user.is_authenticated:
+    if 'rememberme' in request.COOKIES:
         form = CreateInForum()
         if request.method == 'POST':
             form = CreateInForum(request.POST)
@@ -167,7 +178,7 @@ def addInForum(request):
     else: return render(request, 'NotLoggedIn.html')
 
 def addInDiscussion(request):
-    if request.user.is_authenticated:
+    if 'rememberme' in request.COOKIES:
         form = CreateInDiscussion()
         if request.method == 'POST':
             form = CreateInDiscussion(request.POST)
@@ -179,6 +190,8 @@ def addInDiscussion(request):
     else: return render(request, 'NotLoggedIn.html')
 
 def GeneralDiscussions(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="1").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -191,6 +204,8 @@ def GeneralDiscussions(request):
     return render(request, 'Forums.html', context)
 
 def IntroToCS(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="2").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -203,6 +218,8 @@ def IntroToCS(request):
     return render(request, 'Forums.html', context)
 
 def ComputerScience1A(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="4").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -215,6 +232,8 @@ def ComputerScience1A(request):
     return render(request, 'Forums.html', context)
 
 def ComputerScience1B(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="5").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -227,6 +246,8 @@ def ComputerScience1B(request):
     return render(request, 'Forums.html', context)
 
 def ComputerScience2(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="6").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -239,6 +260,8 @@ def ComputerScience2(request):
     return render(request, 'Forums.html', context)
 
 def ComputerScience3(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="7").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -251,6 +274,8 @@ def ComputerScience3(request):
     return render(request, 'Forums.html', context)
 
 def DiscreteStructures(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="8").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -263,6 +288,8 @@ def DiscreteStructures(request):
     return render(request, 'Forums.html', context)
 
 def OperatingSystems(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="9").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -275,6 +302,8 @@ def OperatingSystems(request):
     return render(request, 'Forums.html', context)
 
 def ComputerOrganization(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="10").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -287,6 +316,8 @@ def ComputerOrganization(request):
     return render(request, 'Forums.html', context)
 
 def SoftwareEngineering(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="11").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -299,6 +330,8 @@ def SoftwareEngineering(request):
     return render(request, 'Forums.html', context)
 
 def ComputerCommunicationNetworks(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="12").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -311,6 +344,8 @@ def ComputerCommunicationNetworks(request):
     return render(request, 'Forums.html', context)
 
 def IntroductionToDatabaseDesign(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="13").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -323,6 +358,8 @@ def IntroductionToDatabaseDesign(request):
     return render(request, 'Forums.html', context)
 
 def StructureOfProgrammingLanguages(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="14").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -335,6 +372,8 @@ def StructureOfProgrammingLanguages(request):
     return render(request, 'Forums.html', context)
 
 def DesignAndAnalysisOfAlgorithms(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="15").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -347,6 +386,8 @@ def DesignAndAnalysisOfAlgorithms(request):
     return render(request, 'Forums.html', context)
 
 def CapstoneProject(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="16").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -359,6 +400,8 @@ def CapstoneProject(request):
     return render(request, 'Forums.html', context)
 
 def ArtificialIntelligence(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="17").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -371,6 +414,8 @@ def ArtificialIntelligence(request):
     return render(request, 'Forums.html', context)
 
 def SystemsProgramming(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="18").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -383,6 +428,8 @@ def SystemsProgramming(request):
     return render(request, 'Forums.html', context)
 
 def BigDataAnalytics(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="19").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -395,6 +442,8 @@ def BigDataAnalytics(request):
     return render(request, 'Forums.html', context)
 
 def MachineLearningAndDeepLearning(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="20").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -407,6 +456,8 @@ def MachineLearningAndDeepLearning(request):
     return render(request, 'Forums.html', context)
 
 def CPUArchitectures(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="21").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -419,6 +470,8 @@ def CPUArchitectures(request):
     return render(request, 'Forums.html', context)
 
 def DigitalForensics(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="22").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -431,6 +484,8 @@ def DigitalForensics(request):
     return render(request, 'Forums.html', context)
 
 def IntroductionToCryptology(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="23").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -443,6 +498,8 @@ def IntroductionToCryptology(request):
     return render(request, 'Forums.html', context)
 
 def IntermediateLogic(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="24").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -455,6 +512,8 @@ def IntermediateLogic(request):
     return render(request, 'Forums.html', context)
 
 def InternshipInComputerScience(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="25").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -467,6 +526,8 @@ def InternshipInComputerScience(request):
     return render(request, 'Forums.html', context)
 
 def DataMiningTechniques(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="26").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -479,6 +540,8 @@ def DataMiningTechniques(request):
     return render(request, 'Forums.html', context)
 
 def GameDevelopmentPracticum(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="27").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -491,6 +554,8 @@ def GameDevelopmentPracticum(request):
     return render(request, 'Forums.html', context)
 
 def ComputerGraphics(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="28").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -503,6 +568,8 @@ def ComputerGraphics(request):
     return render(request, 'Forums.html', context)
 
 def InformationSecurity(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="29").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -515,6 +582,8 @@ def InformationSecurity(request):
     return render(request, 'Forums.html', context)
 
 def NaturalLanguageProcessing(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="30").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -527,6 +596,8 @@ def NaturalLanguageProcessing(request):
     return render(request, 'Forums.html', context)
 
 def iOSProgramming(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="31").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -539,6 +610,8 @@ def iOSProgramming(request):
     return render(request, 'Forums.html', context)
 
 def GameEngineConcepts(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="32").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -551,6 +624,8 @@ def GameEngineConcepts(request):
     return render(request, 'Forums.html', context)
 
 def WebProgrammingI(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="33").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -563,6 +638,8 @@ def WebProgrammingI(request):
     return render(request, 'Forums.html', context)
 
 def WebProgrammingII(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="34").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -575,6 +652,8 @@ def WebProgrammingII(request):
     return render(request, 'Forums.html', context)
 
 def AdvancedDigitalDesign(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="35").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -587,6 +666,8 @@ def AdvancedDigitalDesign(request):
     return render(request, 'Forums.html', context)
 
 def GraphAndSocialNetworkAnalysis(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="36").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -599,6 +680,8 @@ def GraphAndSocialNetworkAnalysis(request):
     return render(request, 'Forums.html', context)
 
 def InternetEngineering(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="37").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -611,6 +694,8 @@ def InternetEngineering(request):
     return render(request, 'Forums.html', context)
 
 def ComputerNetworkSecurity(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="38").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -623,6 +708,8 @@ def ComputerNetworkSecurity(request):
     return render(request, 'Forums.html', context)
 
 def HumanInterfaceComputing(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="39").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -635,6 +722,8 @@ def HumanInterfaceComputing(request):
     return render(request, 'Forums.html', context)
 
 def SoftwareRequirementsEngineering(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="40").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -647,6 +736,8 @@ def SoftwareRequirementsEngineering(request):
     return render(request, 'Forums.html', context)
 
 def CPP(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="42").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -659,6 +750,8 @@ def CPP(request):
     return render(request, 'Forums.html', context)
 
 def CSharp(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="43").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -671,6 +764,8 @@ def CSharp(request):
     return render(request, 'Forums.html', context)
 
 def Java(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="44").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -683,6 +778,8 @@ def Java(request):
     return render(request, 'Forums.html', context)
 
 def Javascript(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="45").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -695,6 +792,8 @@ def Javascript(request):
     return render(request, 'Forums.html', context)
 
 def Python(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="46").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -707,6 +806,8 @@ def Python(request):
     return render(request, 'Forums.html', context)
 
 def Swift(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="47").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -719,6 +820,8 @@ def Swift(request):
     return render(request, 'Forums.html', context)
 
 def FrontEnd(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="48").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -731,6 +834,8 @@ def FrontEnd(request):
     return render(request, 'Forums.html', context)
 
 def OtherLanguages(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="58").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -743,6 +848,8 @@ def OtherLanguages(request):
     return render(request, 'Forums.html', context)
 
 def Internships(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="49").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -755,6 +862,8 @@ def Internships(request):
     return render(request, 'Forums.html', context)
 
 def TutoringDiscussions(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="3").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -766,6 +875,8 @@ def TutoringDiscussions(request):
     return render(request, 'Forums.html', context)
 
 def Roommate(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="50").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -778,6 +889,8 @@ def Roommate(request):
     return render(request, 'Forums.html', context)
 
 def ApplicationDevelopment(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="51").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -790,6 +903,8 @@ def ApplicationDevelopment(request):
     return render(request, 'Forums.html', context)
 
 def WebDevelopment(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="52").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -802,6 +917,8 @@ def WebDevelopment(request):
     return render(request, 'Forums.html', context)
 
 def MachineLearning(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="53").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -814,6 +931,8 @@ def MachineLearning(request):
     return render(request, 'Forums.html', context)
 
 def ArtificialIntel(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="54").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -826,6 +945,8 @@ def ArtificialIntel(request):
     return render(request, 'Forums.html', context)
 
 def DataScience(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="55").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -838,6 +959,8 @@ def DataScience(request):
     return render(request, 'Forums.html', context)
 
 def GameDevelopment(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="56").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -850,6 +973,8 @@ def GameDevelopment(request):
     return render(request, 'Forums.html', context)
 
 def InformationTechnology(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="57").order_by('-id')
     count=forums.count()
     discussions=[]
@@ -862,6 +987,8 @@ def InformationTechnology(request):
     return render(request, 'Forums.html', context)
 
 def OtherCareers(request):
+    if not 'rememberme' in request.COOKIES:
+        return redirect('http://localhost:5555/login')
     forums=forum.objects.filter(category="59").order_by('-id')
     count=forums.count()
     discussions=[]
