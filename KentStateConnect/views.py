@@ -9,7 +9,6 @@ import re , uuid , hashlib, os
 from KentStateConnect import app
 
 
-
 @app.route('/contact')
 def contact():
 	"""Renders the contact page."""
@@ -72,12 +71,8 @@ app.config['MAIL_USE_SSL'] = True
 # Intialize Mail
 mail = Mail(app)
 
-
 # Enable account activation?
 account_activation_required = True
-
-# Enable CSRF Protection?
-csrf_protection = False
 
 # This will be the home page, only accessible for loggedin users
 @app.route('/')
@@ -127,12 +122,12 @@ def login():
 				hash = hash.hexdigest();
 				# The cookie expires in 30 days
 				expire_date = datetime.datetime.now() + datetime.timedelta(days=30)
-				resp = make_response('Success.', 200)
+				resp = make_response(redirect(url_for('home')))
 				resp.set_cookie('rememberme', hash, expires=expire_date)
 				# Update rememberme in accounts table to the cookie hash
 				cursor.execute('UPDATE auth_user SET rememberme = ? WHERE user_id = ?', (hash, account[0],))
 				connection.commit()
-				return redirect(url_for('home'))
+				return resp
 			return 'Success'
 		else: 
 			msg = 'Incorrect username / password!'
@@ -175,7 +170,6 @@ def register():
 		cpassword = request.form['cpassword']
 		KSUID = request.form['email']
 		user_email = KSUID + "@kent.edu"
-		#now = datetime.now()
 		# Hash the password
 		hash = password + app.secret_key
 		hash = hashlib.sha1(hash.encode())
