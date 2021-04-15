@@ -115,20 +115,19 @@ def login():
 			session['loggedin'] = True
 			session['id'] = account[0] 
 			session['username'] = account[2] 
-			if 'rememberme' in request.form:
-				# Create hash to store as cookie
-				hash = request.form['username'] + request.form['password'] + app.secret_key 
-				hash = hashlib.sha1(hash.encode())
-				hash = hash.hexdigest();
-				# The cookie expires in 30 days
-				expire_date = datetime.datetime.now() + datetime.timedelta(days=30)
-				resp = make_response(redirect(url_for('home')))
-				resp.set_cookie('rememberme', hash, expires=expire_date)
-				# Update rememberme in accounts table to the cookie hash
-				cursor.execute('UPDATE auth_user SET rememberme = ? WHERE id = ?', (hash, account[0],))
-				connection.commit()
-				return resp
-			return redirect(url_for('home'))
+			# Create hash to store as cookie
+			hash = request.form['username'] + request.form['password'] + app.secret_key 
+			hash = hashlib.sha1(hash.encode())
+			hash = hash.hexdigest();
+			# The cookie expires in 30 days
+			expire_date = datetime.datetime.now() + datetime.timedelta(days=30)
+			resp = make_response(redirect(url_for('home')))
+			resp.set_cookie('rememberme', hash, expires=expire_date)
+			# Update rememberme in accounts table to the cookie hash
+			cursor.execute('UPDATE auth_user SET rememberme = ? WHERE id = ?', (hash, account[0],))
+			connection.commit()
+			return resp
+			#return redirect(url_for('home'))
 		else: 
 			msg = 'Incorrect username / password!'
 	return render_template('login.html', msg = msg) 
