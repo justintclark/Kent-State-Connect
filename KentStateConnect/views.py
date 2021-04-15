@@ -1,5 +1,5 @@
 """
-Routes and views for the flask application.
+Routes and views for Kent State Connect website and Users.
 """
 
 import datetime , sqlite3
@@ -222,7 +222,7 @@ def activate(email, code):
 		connection.commit()
 		# print message, or you could redirect to the login page...
 		msg = "Account successfully activated."
-		return render_template('home.html', msg = msg)
+		return render_template('login.html', msg = msg)
 	return 'Account doesn\'t exist with that email or incorrect activation code!'
 
 # This will be the profile page, only accessible for loggedin users
@@ -286,6 +286,25 @@ def edit_profile():
 		# Show the profile page with account info
 		return render_template('profile-edit.html', account=account, msg=msg)
 	return redirect(url_for('login'))
+
+# User can delete their account
+@app.route('/delete', methods=['GET', 'POST'])
+def delete(): 
+	# Grab the currently logging in users account
+	cursor = connection.cursor()
+	user_to_delete = session['id']
+	cursor.execute('SELECT * FROM auth_user WHERE id = ?', (user_to_delete,))
+	account = cursor.fetchone()
+	try:
+		# Remove user from database
+		cursor.execute('DELETE from auth_user where id = ?', (user_to_delete,))
+		connection.commit()
+		# Log user out and remove cookies and redirect them to the login page
+		logout()
+		return redirect(url_for('login'))
+	except:
+		return "There was a problem deleting the account"
+
 
 # http://localhost:5000//forgotpassword - user can use this page if they have forgotten their password
 @app.route('/forgotpassword', methods=['GET', 'POST'])
