@@ -1010,3 +1010,17 @@ def deletereply(request, pk):
     reply=Discussion.objects.get(pk=pk)
     reply.delete()
     return HttpResponse("Reply deleted successfully.")
+
+
+
+# Custom Error Pages
+
+# Invalid URL
+def error_404(request, exception):
+        data = {}
+        return render(request,'404.html', data)
+
+# Internal Server Error
+def error_500(request):
+        data = {}
+        return render(request,'500.html', data)

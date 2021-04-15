@@ -23,9 +23,9 @@ TEMP_DIR = os.path.join(BASE_DIR,'templates')
 SECRET_KEY = '5&iar0*n*4cg-l%-73xei7r-qaofw$0h!1g7+2i@mt!^*9+9h$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

@@ -88,3 +88,6 @@ urlpatterns = [
     path('deleteforum/<int:pk>', delete, name="deleteforum"),
     path('deletereply/<int:pk>', deletereply, name="deletereply")
 ]
+
+handler404 = 'Discussion_forum.views.error_404'
+handler500 = 'Discussion_forum.views.error_500'
