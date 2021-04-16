@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.conf import settings
+from django.conf.urls.static import static
 from Discussion_forum.views import *
 
 urlpatterns = [
@@ -87,7 +89,7 @@ urlpatterns = [
     path('Roommate/', Roommate, name="Roommate"),
     path('deleteforum/<int:pk>', delete, name="deleteforum"),
     path('deletereply/<int:pk>', deletereply, name="deletereply")
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'Discussion_forum.views.error_404'
 handler500 = 'Discussion_forum.views.error_500'

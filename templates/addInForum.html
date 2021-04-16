@@ -12,7 +12,7 @@
 </head>
 <body style="background: rgb(231, 231, 231)">
     <div class="card-columns" style="padding: 150px; margin: 20px;"></div>
-    <form action="{% url 'addInForum' %}" method="POST" style="background: white;">
+    <form action="{% url 'addInForum' %}" method="POST" enctype="multipart/form-data" style="background: white;">
         {% csrf_token %}
         {{form.as_p}}
         <input type="submit" class="btn btn-success" value="submit">
