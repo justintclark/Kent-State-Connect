@@ -43,7 +43,7 @@
                         <h1>{{forum.title}}</h1>
                         <div class="card-body container">
                             <p> By: {{ forum.name }}</p>{{forum.date_created}}<hr>
-                            <p>{{forum.description}}</p>
+                            <p>{{forum.description | urlize}}</p>
                             <br>
                             <br>
                             <form method="GET" action="{% url 'addInDiscussion' %}">
@@ -60,7 +60,7 @@
                             <form method="POST" action="http://localhost:8000/deletereply/{{objs.id}}" >{% csrf_token %}<p align="right"><button class="btn btn-default"><span class="material-icons">delete</span></button></p></form>
                             {% endif %}
                                <b>{{objs.name}}</b>:<br>
-                               {{objs.discuss}}
+                               <p>{{objs.discuss | urlize }}</p>
                                <br><br><br>
                             {% endif %}
                             {%endfor%}
