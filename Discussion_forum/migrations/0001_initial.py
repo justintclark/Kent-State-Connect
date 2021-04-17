@@ -2,7 +2,6 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-from embed_video.fields import EmbedVideoField
 
 
 class Migration(migrations.Migration):
@@ -36,9 +35,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=300)),
                 ('description', models.CharField(blank=True, max_length=1000)),
                 ('date_created', models.DateTimeField(auto_now_add=True, null=True)),
-                ('category', models.ForeignKey(blank=True, on_delete=django.db.models.deletion.CASCADE, to='Discussion_forum.category_id')),
-                ('upload', models.ImageField(null=True, blank=True, upload_to='images/')),
-                ('video', EmbedVideoField(blank=True)),
+                ('category', models.ForeignKey(blank=True, on_delete=django.db.models.deletion.CASCADE, to='Discussion_forum.category_id'))
             ],
         ),
         migrations.CreateModel(
@@ -48,8 +45,6 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=200)),
                 ('discuss', models.CharField(max_length=1000)),
                 ('forum', models.ForeignKey(blank=True, on_delete=django.db.models.deletion.CASCADE, to='Discussion_forum.forum')),
-                ('upload', models.ImageField(null=True, blank=True, upload_to='images/')),
-                ('video', EmbedVideoField(blank=True)),
             ],
         ),
     ]

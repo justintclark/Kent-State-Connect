@@ -1,6 +1,4 @@
 {% load static %}
-{% load embed_video_tags %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,10 +44,6 @@
                         <div class="card-body container">
                             <p> By: {{ forum.name }}</p>{{forum.date_created}}<hr>
                             <p>{{forum.description | urlize}}</p>
-                            {{% video model-name.video "medium" %}}
-                            {% if forum.upload %}
-                                <img src="{{forum.upload.url}}">
-                            {% endif %}
                             <br>
                             <br>
                             <form method="GET" action="{% url 'addInDiscussion' %}">
