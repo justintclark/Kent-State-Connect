@@ -110,7 +110,8 @@ def login():
 		if account: 
 			# If account exists in users table in the database
 			if account_activation_required and account[8] != 'activated' and account[8] != '':
-				return 'Please activate your account to login!'
+				msg = 'Please activate your account to login!'
+				return render_template('login.html', msg = msg)
 			# Create session data, we can access this data in other routes
 			session['loggedin'] = True
 			session['id'] = account[0] 
